@@ -3,12 +3,15 @@ package likelion.MZConnent.service;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.member.Role;
 import likelion.MZConnent.dto.member.CreateMemberRequest;
+import likelion.MZConnent.dto.member.MemberInfoDto;
 import likelion.MZConnent.jwt.blacklist.AccessTokenBlackList;
 import likelion.MZConnent.jwt.token.TokenProvider;
+import likelion.MZConnent.jwt.token.TokenResponse;
 import likelion.MZConnent.jwt.token.refreshToken.RefreshTokenList;
 import likelion.MZConnent.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +59,29 @@ public class LoginService {
         }
     }
 
+    // 로그인
+    public TokenResponse loginUser(String email, String password) {
+        try {
+            Member member = findMemberByEmail(email);
+
+            checkPassword(password, member);
+
+            // token 발행
+            TokenResponse tokenResponse = tokenProvider.createToken(member);
+
+            // 발급한 Refresh Token 저장
+            refreshTokenList.saveRefreshToken(tokenResponse.getRefreshToken().getToken(), email);
+
+            return tokenResponse;
+        } catch (BadCredentialsException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    public MemberInfoDto getMemberInfo(String email) {
+        return MemberInfoDto.toDto(findMemberByEmail(email));
+    }
+
     // 비밀번호 정책에 맞는지 점검하는 함수
     private void checkPasswordPolicy(String password) {
         if (PASSWORD_PATTERN.matcher(password).matches()) {
@@ -64,6 +90,20 @@ public class LoginService {
 
         log.info("비밀번호 정책 미달");
         throw new IllegalArgumentException("비밀번호는 최소 8자리여야하고 영어, 숫자, 특수문자를 포함해야 합니다.");
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> {
+            log.info("계정이 존재하지 않음.");
+            return new IllegalArgumentException("계정이 존재하지 않습니다.");
+        });
+    }
+
+    private void checkPassword(String password, Member member) {
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            log.info("비밀번호가 일치하지 않음.");
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+        }
     }
 
 }

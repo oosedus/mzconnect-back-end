@@ -27,7 +27,7 @@ import java.util.UUID;
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String TOKEN_ID_KEY = "tokenId";
-    private static final String TOKEN_TYPE = "tokeyType";
+    private static final String TOKEN_TYPE = "tokenType";
     private static final String USERNAME_KEY = "username";
 
     private final Key hashKey;
@@ -52,10 +52,10 @@ public class TokenProvider {
         long currentTime = (new Date()).getTime();
 
         // access 토큰 발행
-        TokenInfo accessTokenInfo = getToken(member.getEmail(), currentTime, TokenType.ACCESS, this.accessTokenValidityMilliseconds);
+        TokenInfo accessTokenInfo = getToken(member.getEmail(), member.getUsername(), currentTime, TokenType.ACCESS, this.accessTokenValidityMilliseconds);
 
         // refresh 토큰 발행
-        TokenInfo refreshTokenInfo = getToken(member.getEmail(), currentTime, TokenType.REFRESH, this.refreshTokenValidityMilliseconds);
+        TokenInfo refreshTokenInfo = getToken(member.getEmail(), member.getUsername(), currentTime, TokenType.REFRESH, this.refreshTokenValidityMilliseconds);
 
         return TokenResponse.builder()
                 .email(member.getEmail())
@@ -70,7 +70,8 @@ public class TokenProvider {
         long currentTime = (new Date()).getTime();
 
         // access 토큰 발행
-        TokenInfo accessTokenInfo = getToken(claims.getSubject(), currentTime, TokenType.ACCESS, this.accessTokenValidityMilliseconds);
+        TokenInfo accessTokenInfo = getToken(claims.getSubject(), claims.get(USERNAME_KEY, String.class
+        ), currentTime, TokenType.ACCESS, this.accessTokenValidityMilliseconds);
 
 
         return TokenResponse.builder()
@@ -80,11 +81,11 @@ public class TokenProvider {
     }
 
 
-    private TokenInfo getToken(String email, long currentTime, TokenType tokenType, long tokenValidityMilliseconds) {
+    private TokenInfo getToken(String email, String username, long currentTime, TokenType tokenType, long tokenValidityMilliseconds) {
         Date tokenExpireTime = new Date(currentTime + tokenValidityMilliseconds);
         String accessTokenId = UUID.randomUUID().toString();
 
-        String token =  issueToken(email, tokenType, Role.USER, accessTokenId, tokenExpireTime);
+        String token =  issueToken(email,username, tokenType, Role.USER, accessTokenId, tokenExpireTime);
 
         return TokenInfo.builder()
                 .type(tokenType)
@@ -95,12 +96,13 @@ public class TokenProvider {
     }
 
     // 토큰을 발행하는 함수
-    private String issueToken(String email, TokenType tokenType, Role role, String tokenId, Date tokenExpireTime) {
+    private String issueToken(String email, String username, TokenType tokenType, Role role, String tokenId, Date tokenExpireTime) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim(TOKEN_TYPE, tokenType)
                 .claim(AUTHORITIES_KEY, role)
                 .claim(TOKEN_ID_KEY, tokenId)
+                .claim(USERNAME_KEY, username)
                 .signWith(hashKey, SignatureAlgorithm.HS512)
                 .setExpiration(tokenExpireTime)
                 .compact();

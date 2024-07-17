@@ -16,5 +16,6 @@ public class TokenResponse {
     public TokenResponse(TokenInfo accessToken, TokenInfo refreshToken, String email) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.email = email;
     }
 }

@@ -3,12 +3,18 @@ package likelion.MZConnent.api.member;
 import jakarta.validation.Valid;
 import likelion.MZConnent.dto.ApiResponseJson;
 import likelion.MZConnent.dto.member.CreateMemberRequest;
+import likelion.MZConnent.dto.member.LoginMemberRequest;
+import likelion.MZConnent.dto.member.MemberInfoDto;
+import likelion.MZConnent.jwt.principle.UserPrinciple;
+import likelion.MZConnent.jwt.token.TokenResponse;
 import likelion.MZConnent.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +40,28 @@ public class LoginController {
 
         return ResponseEntity.ok(new ApiResponseJson(
                 HttpStatus.OK, null, Map.of("memberId", memberId)));
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<ApiResponseJson> login(@Valid @RequestBody LoginMemberRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException("잘못된 요청입니다.");
+        }
+
+        TokenResponse tokenResponse = loginService.loginUser(request.getEmail(), request.getPassword());
+
+        log.info("token 발행: {}", tokenResponse.toString());
+
+        return ResponseEntity.ok(new ApiResponseJson(
+                HttpStatus.OK, null, tokenResponse
+        ));
+    }
+
+    @GetMapping("/user/info")
+    public ResponseEntity<ApiResponseJson> getMemberInfo(@AuthenticationPrincipal UserPrinciple userPrinciple){
+        String email = userPrinciple.getEmail();
+        MemberInfoDto memberInfoDto = loginService.getMemberInfo(email);
+
+        return ResponseEntity.ok(new ApiResponseJson(HttpStatus.OK, null, memberInfoDto));
     }
 }
