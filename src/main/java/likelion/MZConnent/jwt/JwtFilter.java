@@ -53,7 +53,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
         if (tokenValidationResult.getTokenType().equals(TokenType.ACCESS)) {         // access token인 경우
-            // TODO: blacklist에 있는지 확인
+            if (tokenProvider.isAccessTokenBlackList(token)) {
+                handleBlackListToken(request, response, filterChain);
+                return;
+            }
+
             // 정상 토큰 처리
             handleValidAccessToken(token, tokenValidationResult);
             filterChain.doFilter(request, response);
@@ -63,6 +67,11 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             // TODO: 둘 다 아닌 경우
         }
+    }
+
+    private void handleBlackListToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        request.setAttribute("result", new TokenValidationResult(TokenStatus.TOKEN_IS_BLACKLIST, null, null, null));
+        filterChain.doFilter(request, response);
     }
 
 

@@ -78,6 +78,11 @@ public class LoginService {
         }
     }
 
+    // 로그아웃
+    public void logoout(String accessToken, String email) {
+        accessTokenBlackList.setBlackList(accessToken, email);
+    }
+
     public MemberInfoDto getMemberInfo(String email) {
         return MemberInfoDto.toDto(findMemberByEmail(email));
     }

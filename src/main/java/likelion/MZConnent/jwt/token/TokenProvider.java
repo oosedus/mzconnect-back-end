@@ -128,7 +128,7 @@ public class TokenProvider {
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않는 JWT 서명");
             return new TokenValidationResult(TokenStatus.TOKEN_HASH_NOT_SUPPORTED, null, null, null);
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+        } catch (SecurityException | MalformedJwtException | IllegalArgumentException | SignatureException e) {
             log.info("잘못된 JWT 토큰");
             return new TokenValidationResult(TokenStatus.TOKEN_WRONG_SIGNATURE, null, null, null);
         }
@@ -144,5 +144,14 @@ public class TokenProvider {
         UserPrinciple principle = new UserPrinciple(claims.getSubject(), claims.get(USERNAME_KEY, String.class), authorities);
 
         return new UsernamePasswordAuthenticationToken(principle, token, authorities);
+    }
+
+    // blacklist에 존재하는 token인지 확인하는 함수
+    public boolean isAccessTokenBlackList(String accessToken) {
+        if (accessTokenBlackList.isTokenBlackList(accessToken)) {
+            log.info("이 access token이 블랙리스트에 존재함");
+            return true;
+        }
+        return false;
     }
 }

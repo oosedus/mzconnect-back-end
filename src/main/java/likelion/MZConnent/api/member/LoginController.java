@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -55,6 +52,18 @@ public class LoginController {
         return ResponseEntity.ok(new ApiResponseJson(
                 HttpStatus.OK, null, tokenResponse
         ));
+    }
+
+    @PostMapping("/user/logout")
+    public ResponseEntity<ApiResponseJson> logout(@AuthenticationPrincipal UserPrinciple userPrinciple, @RequestHeader("Authorization") String authHeader) {
+        String email = userPrinciple.getEmail();
+
+        log.info("로그아웃 이메일: {}", email);
+
+        // Bearer 를 문자열에서 제외하기 위해 substring을 사용
+        loginService.logoout(authHeader.substring(7), email);
+
+        return ResponseEntity.ok(new ApiResponseJson(HttpStatus.OK, "로그아웃 성공"));
     }
 
     @GetMapping("/user/info")
