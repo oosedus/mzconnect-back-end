@@ -6,9 +6,17 @@ import io.jsonwebtoken.security.Keys;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.member.Role;
 import likelion.MZConnent.jwt.blacklist.AccessTokenBlackList;
+import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.jwt.token.refreshToken.RefreshTokenList;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.security.Key;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
@@ -20,6 +28,7 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String TOKEN_ID_KEY = "tokenId";
     private static final String TOKEN_TYPE = "tokeyType";
+    private static final String USERNAME_KEY = "username";
 
     private final Key hashKey;
     private final long accessTokenValidityMilliseconds;
@@ -121,5 +130,17 @@ public class TokenProvider {
             log.info("잘못된 JWT 토큰");
             return new TokenValidationResult(TokenStatus.TOKEN_WRONG_SIGNATURE, null, null, null);
         }
+    }
+
+    // access 토큰과 claims을 전달받아 UsernamePasswordAuthenticationToken을 생성해 전달하는 함수
+    public Authentication getAuthentication(String token, Claims claims) {
+        // claims에서 권한 정보를 받아와 파싱
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY)  .toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+
+        UserPrinciple principle = new UserPrinciple(claims.getSubject(), claims.get(USERNAME_KEY, String.class), authorities);
+
+        return new UsernamePasswordAuthenticationToken(principle, token, authorities);
     }
 }
