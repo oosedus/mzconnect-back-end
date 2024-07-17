@@ -149,7 +149,16 @@ public class TokenProvider {
     // blacklist에 존재하는 token인지 확인하는 함수
     public boolean isAccessTokenBlackList(String accessToken) {
         if (accessTokenBlackList.isTokenBlackList(accessToken)) {
-            log.info("이 access token이 블랙리스트에 존재함");
+            log.info("access token이 blacklist에 존재함");
+            return true;
+        }
+        return false;
+    }
+
+    // refreshtokenlist에 존재하는 token인지 확인하는 함수
+    public boolean isRefreshTokenList(String refreshToken) {
+        if (refreshTokenList.isRefreshTokenList(refreshToken)) {
+            log.info("존재하는 refresh token임");
             return true;
         }
         return false;

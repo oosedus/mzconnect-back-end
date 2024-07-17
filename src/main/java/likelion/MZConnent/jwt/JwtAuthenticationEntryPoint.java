@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import likelion.MZConnent.dto.ApiResponseJson;
 import likelion.MZConnent.jwt.token.TokenInfo;
+import likelion.MZConnent.jwt.token.TokenResponse;
 import likelion.MZConnent.jwt.token.TokenStatus;
 import likelion.MZConnent.jwt.token.TokenValidationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -34,24 +35,24 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         TokenValidationResult result = (TokenValidationResult) request.getAttribute(VALIDATION_RESULT_KEY);
         String errorMessage = result.getTokenStatus().getMessage();
-        TokenInfo tokenInfo = null;
+        TokenResponse tokenResponse = null;
 
         if (result.getTokenStatus() == TokenStatus.TOKEN_REFRESHED) {
-            tokenInfo = result.getTokenInfo();
+            tokenResponse = result.getTokenResponse();
         }
 
-        sendError(response, errorMessage, tokenInfo);
+        sendError(response, errorMessage, tokenResponse);
     }
 
-    private void sendError(HttpServletResponse response, String message, TokenInfo tokenInfo) throws IOException {
+    private void sendError(HttpServletResponse response, String message, TokenResponse tokenResponse) throws IOException {
         ApiResponseJson responseJson;
 
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        if (tokenInfo != null) {
-            responseJson = new ApiResponseJson(HttpStatus.OK, message, tokenInfo);
+        if (tokenResponse != null) {
+            responseJson = new ApiResponseJson(HttpStatus.OK, message, tokenResponse);
         } else {
             responseJson = new ApiResponseJson(HttpStatus.valueOf(HttpServletResponse.SC_UNAUTHORIZED), message, null);
         }

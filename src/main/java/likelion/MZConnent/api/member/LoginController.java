@@ -33,10 +33,10 @@ public class LoginController {
         }
 
         Long memberId = loginService.createUser(request);
-        log.info("계정 생성 성공: {}", memberId);
+        log.info("회원가입 성공: {}", memberId);
 
         return ResponseEntity.ok(new ApiResponseJson(
-                HttpStatus.OK, null, Map.of("memberId", memberId)));
+                HttpStatus.OK, "회원가입 성공", Map.of("memberId", memberId)));
     }
 
     @PostMapping("/user/login")
@@ -50,7 +50,7 @@ public class LoginController {
         log.info("token 발행: {}", tokenResponse.toString());
 
         return ResponseEntity.ok(new ApiResponseJson(
-                HttpStatus.OK, null, tokenResponse
+                HttpStatus.OK, "로그인 성공", tokenResponse
         ));
     }
 

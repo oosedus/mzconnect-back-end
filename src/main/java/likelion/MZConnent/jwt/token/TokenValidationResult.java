@@ -16,7 +16,7 @@ public class TokenValidationResult {
     private TokenType tokenType;
     private String tokenId;
     private Claims claims;
-    private TokenInfo tokenInfo = null;
+    private TokenResponse tokenResponse = null;
 
     public TokenValidationResult(TokenStatus tokenStatus, TokenType tokenType, String tokenId, Claims claims) {
         this.tokenStatus = tokenStatus;
@@ -25,12 +25,12 @@ public class TokenValidationResult {
         this.claims = claims;
     }
 
-    public TokenValidationResult(TokenStatus tokenStatus, TokenType tokenType, String tokenId, Claims claims, TokenInfo tokenInfo) {
+    public TokenValidationResult(TokenStatus tokenStatus, TokenType tokenType, String tokenId, Claims claims, TokenResponse tokenResponse) {
         this.tokenStatus = tokenStatus;
         this.tokenType = tokenType;
         this.tokenId = tokenId;
         this.claims = claims;
-        this.tokenInfo = tokenInfo;
+        this.tokenResponse = tokenResponse;
     }
 
     public String getEmail() {
