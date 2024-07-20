@@ -1,5 +1,6 @@
 package likelion.MZConnent.dto.member;
 
+import likelion.MZConnent.domain.member.Age;
 import likelion.MZConnent.domain.member.Gender;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.member.Role;
@@ -14,10 +15,10 @@ public class MemberInfoDto {
     private String username;
     private Role role;
     private Gender gender;
-    private Integer age;
+    private Age age;
 
     @Builder
-    public MemberInfoDto(String email, String realname, String username, Role role, Gender gender, Integer age) {
+    public MemberInfoDto(String email, String realname, String username, Role role, Gender gender, Age age) {
         this.email = email;
         this.realname = realname;
         this.username = username;

@@ -32,10 +32,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private Integer age;
+    @Enumerated(EnumType.STRING)
+    private Age age;
 
     @Builder
-    public Member(Long id, String email, String password, String realname, String username, Role role, Gender gender, Integer age) {
+    public Member(Long id, String email, String password, String realname, String username, Role role, Gender gender, Age age) {
         this.id = id;
         this.email = email;
         this.password = password;

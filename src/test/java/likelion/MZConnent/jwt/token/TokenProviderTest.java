@@ -1,5 +1,7 @@
 package likelion.MZConnent.jwt.token;
 
+import likelion.MZConnent.domain.member.Age;
+import likelion.MZConnent.domain.member.Gender;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.member.Role;
 import likelion.MZConnent.jwt.blacklist.AccessTokenBlackList;
@@ -44,7 +46,8 @@ public class TokenProviderTest {
                 .realname("테스트")
                 .username("test")
                 .role(Role.USER)
-                .age(40)
+                .age(Age.FOURTH_GRADE)
+                .gender(Gender.FEMALE)
                 .build();
     }
 }

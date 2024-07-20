@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import likelion.MZConnent.domain.member.Age;
 import likelion.MZConnent.domain.member.Gender;
-import likelion.MZConnent.domain.member.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,5 +37,6 @@ public class CreateMemberRequest {
     private Gender gender;
 
     @NotNull
-    private Integer age;
+    @Enumerated(EnumType.STRING)
+    private Age age;
 }
