@@ -73,4 +73,9 @@ public class LoginController {
 
         return ResponseEntity.ok(new ApiResponseJson(HttpStatus.OK, null, memberInfoDto));
     }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test";
+    }
 }
