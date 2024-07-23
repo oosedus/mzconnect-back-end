@@ -43,7 +43,7 @@ jobs:
 
     # Docker Image build
     - name : docker image build
-      run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/mzconnect-repo .
+      run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }} .
 
      # DockerHub 로그인
     - name: docker login
