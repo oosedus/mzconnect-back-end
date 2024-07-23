@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public enum Age {
     FOURTH_GRADE("4학년"),
     FIFTH_GRADE("5학년"),
-    SIXTH_GRADE("6학년 이상");
+    SIXTH_GRADE("6학년");
 
     private final String name;
 
