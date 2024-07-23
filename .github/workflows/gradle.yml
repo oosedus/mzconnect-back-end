@@ -41,16 +41,16 @@ jobs:
     - name: Build with Gradle 8.5
       run: gradle build
 
-    # Docker Image build
-    - name : docker image build
-      run: docker build --platform linux/amd64 -t cy423/mzconnect-repo .
-
      # DockerHub 로그인
     - name: docker login
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    # Docker Image build
+    - name : docker image build
+      run: docker build --platform linux/amd64 -t cy423/mzconnect-repo .
 
     # DockerHub 이미지 push
     - name: dockerhub push
