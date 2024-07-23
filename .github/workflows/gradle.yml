@@ -50,7 +50,7 @@ jobs:
 
     # Docker Image build
     - name : docker image build
-      run: docker build --platform linux/amd64 -t cy423/mzconnect-repo .
+      run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }} .
 
     # DockerHub 이미지 push
     - name: dockerhub push
