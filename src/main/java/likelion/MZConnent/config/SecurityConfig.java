@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     //권한별 url
     private final String[] adminUrl = {"/admin/**"};
-    private final String[] permitAllUrl = {"/error", "/user/login" };
+    private final String[] permitAllUrl = {"/error", "/user/login", "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", "/test" };
     private final String[] anonymousUrl = {"/user/register"};
 
 
