@@ -34,8 +34,7 @@ public class ClubMember {
     private List<Manner> manners;
 
     @Builder
-    public ClubMember(Long clubMemberId, ClubRole clubRole, Member member, Club club) {
-        this.clubMemberId = clubMemberId;
+    public ClubMember(ClubRole clubRole, Member member, Club club) {
         this.clubRole = clubRole;
         this.member = member;
         this.club = club;

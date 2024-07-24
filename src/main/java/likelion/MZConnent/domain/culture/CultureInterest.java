@@ -24,8 +24,7 @@ public class CultureInterest {
     private Culture culture;
 
     @Builder
-    public CultureInterest(Long cultureInterestId, Member member, Culture culture) {
-        this.cultureInterestId = cultureInterestId;
+    public CultureInterest(Member member, Culture culture) {
         this.member = member;
         this.culture = culture;
     }

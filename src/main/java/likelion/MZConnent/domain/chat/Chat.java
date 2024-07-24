@@ -33,8 +33,7 @@ public class Chat {
     private Member member;
 
     @Builder
-    public Chat(Long chatId, LocalDateTime createdDate, String content, Club club, Member member) {
-        this.chatId = chatId;
+    public Chat(LocalDateTime createdDate, String content, Club club, Member member) {
         this.createdDate = createdDate;
         this.content = content;
         this.club = club;

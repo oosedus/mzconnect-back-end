@@ -32,8 +32,7 @@ public class ReviewComment {
     private Review review;
 
     @Builder
-    public ReviewComment(Long commentId, String content, LocalDateTime createdDate, Member member, Review review) {
-        this.commentId = commentId;
+    public ReviewComment(String content, LocalDateTime createdDate, Member member, Review review) {
         this.content = content;
         this.createdDate = createdDate;
         this.member = member;

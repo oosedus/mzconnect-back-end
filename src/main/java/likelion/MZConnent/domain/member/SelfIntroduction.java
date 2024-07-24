@@ -1,8 +1,7 @@
-package likelion.MZConnent.domain.self;
+package likelion.MZConnent.domain.member;
 
 import jakarta.persistence.*;
 import likelion.MZConnent.domain.culture.CultureCategory;
-import likelion.MZConnent.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,19 +13,19 @@ import lombok.NoArgsConstructor;
 public class SelfIntroduction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long selfIntroductionId;
+    @Column(name = "self_introduction_id")
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "memberId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "cultureCategoryId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "culture_category_id")
     private CultureCategory cultureCategory;
 
     @Builder
-    public SelfIntroduction(Long selfIntroductionId, Member member, CultureCategory cultureCategory) {
-        this.selfIntroductionId = selfIntroductionId;
+    public SelfIntroduction(Member member, CultureCategory cultureCategory) {
         this.member = member;
         this.cultureCategory = cultureCategory;
     }

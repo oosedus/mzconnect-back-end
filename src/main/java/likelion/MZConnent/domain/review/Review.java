@@ -61,8 +61,7 @@ public class Review {
     private List<ReviewLike> reviewLikes;
 
     @Builder
-    public Review(Long reviewId, String title, String content, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createDate, Integer likeCount, Integer commentCount, Culture culture, Member member) {
-        this.reviewId = reviewId;
+    public Review(String title, String content, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createDate, int likeCount, int commentCount, Culture culture, Member member) {
         this.title = title;
         this.content = content;
         this.reviewImageUrl1 = reviewImageUrl1 != null ? reviewImageUrl1 : ""; // 나중에 기본 이미지 URL 추가

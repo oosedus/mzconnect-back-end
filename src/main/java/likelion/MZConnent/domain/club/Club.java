@@ -69,8 +69,7 @@ public class Club {
 
 
     @Builder
-    public Club(Long clubId, String title, LocalDate meetingDate, LocalDateTime createdDate, String content, GenderRestriction genderRestriction, AgeRestriction ageRestriction, Integer currentParticipant, Integer maxParticipant, String status, Member member, Culture culture, RegionCategory region) {
-        this.clubId = clubId;
+    public Club(String title, LocalDate meetingDate, LocalDateTime createdDate, String content, GenderRestriction genderRestriction, AgeRestriction ageRestriction, int currentParticipant, int maxParticipant, String status, Member member, Culture culture, RegionCategory region) {
         this.title = title;
         this.meetingDate = meetingDate;
         this.createdDate = createdDate;
@@ -80,5 +79,8 @@ public class Club {
         this.currentParticipant = currentParticipant;
         this.maxParticipant = maxParticipant;
         this.status = status;
+        this.member = member;
+        this.culture = culture;
+        this.region = region;
     }
 }

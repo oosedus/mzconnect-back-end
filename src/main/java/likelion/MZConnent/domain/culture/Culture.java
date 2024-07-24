@@ -53,8 +53,7 @@ public class Culture {
     private List<Review> reviews;
 
     @Builder
-    public Culture(Long cultureId, Integer interestCount, String content, String cultureImageUrl, String name, String summary, Integer cultureCount, String recommendedMember, CultureCategory cultureCategory) {
-        this.cultureId = cultureId;
+    public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int cultureCount, String recommendedMember, CultureCategory cultureCategory) {
         this.interestCount = interestCount;
         this.content = content;
         this.cultureImageUrl = cultureImageUrl;

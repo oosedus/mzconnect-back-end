@@ -1,6 +1,6 @@
-package likelion.MZConnent.repository.self;
+package likelion.MZConnent.repository.member;
 
-import likelion.MZConnent.domain.self.SelfIntroduction;
+import likelion.MZConnent.domain.member.SelfIntroduction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

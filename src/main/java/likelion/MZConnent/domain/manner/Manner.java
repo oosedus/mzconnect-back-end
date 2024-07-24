@@ -31,8 +31,7 @@ public class Manner {
     private ClubMember clubMember;
 
     @Builder
-    public Manner(Long mannerId, Integer score, Member member, ClubMember clubMember) {
-        this.mannerId = mannerId;
+    public Manner(int score, Member member, ClubMember clubMember) {
         this.score = score;
         this.member = member;
         this.clubMember = clubMember;
