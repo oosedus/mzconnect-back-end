@@ -1,6 +1,14 @@
 package likelion.MZConnent.domain.member;
 
 import jakarta.persistence.*;
+import likelion.MZConnent.domain.chat.Chat;
+import likelion.MZConnent.domain.club.Club;
+import likelion.MZConnent.domain.club.ClubMember;
+import likelion.MZConnent.domain.culture.CultureInterest;
+import likelion.MZConnent.domain.manner.Manner;
+import likelion.MZConnent.domain.review.Review;
+import likelion.MZConnent.domain.review.ReviewComment;
+import likelion.MZConnent.domain.review.ReviewLike;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -23,7 +31,6 @@ public class Member {
     @Column(length = 100)
     private String password;
 
-    @Column
     private String realname;
 
     @Column(length = 50)
