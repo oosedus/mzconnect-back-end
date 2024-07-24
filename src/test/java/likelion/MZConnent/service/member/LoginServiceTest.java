@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 
 @SpringBootTest
 @Slf4j
+@Rollback
 class LoginServiceTest {
     @Autowired
     LoginService loginService;
@@ -30,9 +32,10 @@ class LoginServiceTest {
     void createMember() throws Exception {
         //given
         CreateMemberRequest request = CreateMemberRequest.builder()
-                .email("tes1t@test.ac.kr")
+                .email("aa@test.ac.kr")
                 .password("test1234@!!")
                 .realname("테스트")
+                .username("안녕")
                 .age(Age.FOURTH_GRADE)
                 .gender(Gender.FEMALE)
                 .instagramId("insta")
