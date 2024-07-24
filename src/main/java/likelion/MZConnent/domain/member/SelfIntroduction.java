@@ -30,3 +30,4 @@ public class SelfIntroduction {
         this.cultureCategory = cultureCategory;
     }
 }
+

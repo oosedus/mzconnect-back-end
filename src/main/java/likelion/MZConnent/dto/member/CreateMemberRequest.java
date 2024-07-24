@@ -1,5 +1,6 @@
 package likelion.MZConnent.dto.member;
 
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -8,13 +9,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import likelion.MZConnent.domain.member.Age;
 import likelion.MZConnent.domain.member.Gender;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateMemberRequest {
     @Email
@@ -39,4 +39,23 @@ public class CreateMemberRequest {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Age age;
+
+    private String instagramId;
+
+    private String facebookId;
+
+    private List<Long> selfIntroductions = new ArrayList<>();
+
+    @Builder
+    public CreateMemberRequest(String email, String password, String realname, String username, Gender gender, Age age, String instagramId, String facebookId, List<Long> selfIntroductions) {
+        this.email = email;
+        this.password = password;
+        this.realname = realname;
+        this.username = username;
+        this.gender = gender;
+        this.age = age;
+        this.instagramId = instagramId;
+        this.facebookId = facebookId;
+        this.selfIntroductions = selfIntroductions;
+    }
 }

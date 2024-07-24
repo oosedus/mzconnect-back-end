@@ -1,12 +1,15 @@
 package likelion.MZConnent.domain.member;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Member {
     @Id
@@ -35,9 +38,16 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Age age;
 
+    private String instagramId;
+
+    private String facebookId;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<SelfIntroduction> selfIntroductions = new ArrayList<>();
+
+
     @Builder
-    public Member(Long id, String email, String password, String realname, String username, Role role, Gender gender, Age age) {
-        this.id = id;
+    public Member(String email, String password, String realname, String username, Role role, Gender gender, Age age, String instagramId, String facebookId, List<SelfIntroduction> selfIntroductions) {
         this.email = email;
         this.password = password;
         this.realname = realname;
@@ -45,5 +55,8 @@ public class Member {
         this.role = role;
         this.gender = gender;
         this.age = age;
+        this.instagramId = instagramId;
+        this.facebookId = facebookId;
+        this.selfIntroductions = selfIntroductions;
     }
 }

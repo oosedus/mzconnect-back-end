@@ -15,7 +15,8 @@ import java.util.List;
 public class CultureCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cultureCategoryId;
+    @Column(name = "culture_category_id")
+    private Long id;
 
     @Column(length = 255, nullable = false)
     private String name;
