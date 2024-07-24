@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "culture_categories")
 public class CultureCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "culture_interests")
 public class CultureInterest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

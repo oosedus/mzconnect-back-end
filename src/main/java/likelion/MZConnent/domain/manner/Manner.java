@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "manners")
 public class Manner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

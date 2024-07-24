@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@Table(name = "region_categories")
 public class RegionCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
