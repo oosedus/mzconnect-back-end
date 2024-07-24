@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "self_introductions")
 public class SelfIntroduction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,6 @@ public class SelfIntroduction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "culture_category_id")
@@ -30,3 +30,4 @@ public class SelfIntroduction {
         this.cultureCategory = cultureCategory;
     }
 }
+
