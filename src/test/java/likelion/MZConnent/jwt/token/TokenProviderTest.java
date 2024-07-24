@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @SpringBootTest
 public class TokenProviderTest {
@@ -48,6 +51,9 @@ public class TokenProviderTest {
                 .role(Role.USER)
                 .age(Age.FOURTH_GRADE)
                 .gender(Gender.FEMALE)
+                .instagramId("insta")
+                .facebookId("facebook")
+                .selfIntroductions(new ArrayList<>())
                 .build();
     }
 }
