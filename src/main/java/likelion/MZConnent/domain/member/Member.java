@@ -45,6 +45,29 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<SelfIntroduction> selfIntroductions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Club> clubs;
+
+    @OneToMany(mappedBy = "member")
+    private List<ReviewComment> reviewComments;
+
+    @OneToMany(mappedBy = "member")
+    private List<Chat> chats;
+
+    @OneToMany(mappedBy = "member")
+    private List<CultureInterest> cultureInterests;
+
+    @OneToMany(mappedBy = "member")
+    private List<ReviewLike> reviewLikes;
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubMember> clubMembers;
+
+    @OneToMany(mappedBy = "member")
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "member")
+    private List<Manner> manners;
 
     @Builder
     public Member(String email, String password, String realname, String username, Role role, Gender gender, Age age, String instagramId, String facebookId, List<SelfIntroduction> selfIntroductions) {
