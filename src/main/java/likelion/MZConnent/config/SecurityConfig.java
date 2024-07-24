@@ -27,9 +27,10 @@ public class SecurityConfig {
     //권한별 url
     private final String[] adminUrl = {"/admin/**"};
     private final String[] permitAllUrl = {"/error",
-            "/api/auth/login",
-            "/api/auth/logout",
-            "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", "/test" };
+            "/api/auth/login", "/api/auth/logout", // 회원
+            "/api/categories/culture", // 문화
+            "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
+    };
     private final String[] anonymousUrl = {
             "/api/auth/signup"
     };
