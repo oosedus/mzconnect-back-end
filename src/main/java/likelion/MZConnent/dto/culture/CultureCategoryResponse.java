@@ -29,7 +29,7 @@ public class CultureCategoryResponse {
 
         public CultureCategoryDto(CultureCategory cultureCategory) {
             this.cultureCategoryId = cultureCategory.getId();
-            this.name = getName();
+            this.name = cultureCategory.getName();
         }
     }
 }
