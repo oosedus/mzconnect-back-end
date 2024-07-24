@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 /**
- * 에러 메시지 커스텀 클래스
+ * 응답 커스텀 클래스
  */
 @Getter
 @ToString
