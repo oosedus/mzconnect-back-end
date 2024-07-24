@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name="clubs")
 @Getter
 @NoArgsConstructor
 public class Club {

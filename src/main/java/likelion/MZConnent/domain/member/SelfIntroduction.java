@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "self_introductions")
 public class SelfIntroduction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
