@@ -4,10 +4,15 @@ import likelion.MZConnent.domain.club.ClubRole;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.LeaderDto;
 import likelion.MZConnent.dto.club.SelfIntroductionDto;
+import likelion.MZConnent.dto.club.request.ClubSimpleRequest;
 import likelion.MZConnent.dto.club.response.ClubDetailResponse;
+import likelion.MZConnent.dto.club.response.ClubSimpleResponse;
+import likelion.MZConnent.dto.club.response.PageContentResponse;
 import likelion.MZConnent.repository.club.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import likelion.MZConnent.domain.club.Club;
 
@@ -76,5 +81,43 @@ public class ClubInfoService {
                 .registrationStatus(registrationStatus)
                 .leader(leaderResponses)
                 .build();
+    }
+
+    public PageContentResponse<ClubSimpleResponse> getClubList(ClubSimpleRequest request, Pageable pageable) {
+        Page<Club> clubs = clubRepository.findAllByFilters(
+                request.getCultureId(),
+                request.getRegionId(),
+                pageable);
+
+        return new PageContentResponse<>(
+                clubs.stream()
+                        .map(club -> ClubSimpleResponse.builder()
+                                .clubId(club.getClubId())
+                                .title(club.getTitle())
+                                .regionId(club.getRegion().getRegionId())
+                                .regionName(club.getRegion().getName())
+                                .cultureCategoryId(club.getCulture().getCultureCategory().getId())
+                                .cultureName(club.getCulture().getName())
+                                .leaderProfileImage(getLeaderProfileImage(club))
+                                .meetingDate(club.getMeetingDate())
+                                .createdDate(club.getCreatedDate())
+                                .genderRestriction(club.getGenderRestriction().name())
+                                .ageRestriction(club.getAgeRestriction().name())
+                                .currentParticipant(club.getCurrentParticipant())
+                                .maxParticipant(club.getMaxParticipant())
+                                .build())
+                        .collect(Collectors.toList()),
+                clubs.getTotalPages(),
+                clubs.getTotalElements(),
+                pageable.getPageSize()
+        );
+    }
+
+    private String getLeaderProfileImage(Club club) {
+        return club.getClubMembers().stream()
+                .filter(cm -> cm.getClubRole() == ClubRole.LEADER)
+                .findFirst()
+                .map(cm -> cm.getMember().getProfileImageUrl())
+                .orElse(null);
     }
 }
