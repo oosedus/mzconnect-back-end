@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
 import likelion.MZConnent.dto.club.response.CreateClubResponse;
-import likelion.MZConnent.dto.member.MemberInfoDto;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.repository.member.MemberRepository;
 import likelion.MZConnent.service.club.ClubService;
