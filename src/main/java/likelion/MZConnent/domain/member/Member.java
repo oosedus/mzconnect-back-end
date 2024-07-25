@@ -1,6 +1,7 @@
 package likelion.MZConnent.domain.member;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import likelion.MZConnent.domain.chat.Chat;
 import likelion.MZConnent.domain.club.Club;
 import likelion.MZConnent.domain.club.ClubMember;
@@ -11,6 +12,7 @@ import likelion.MZConnent.domain.review.ReviewComment;
 import likelion.MZConnent.domain.review.ReviewLike;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,31 +51,37 @@ public class Member {
 
     private String facebookId;
 
+    @Column(columnDefinition = "TEXT")
+    private String profileImageUrl = ""; // TODO: 기본 프로필 이미지 추가
+
+    @Column(precision = 2, scale = 1)
+    private BigDecimal averageMannersScore = BigDecimal.valueOf(4);
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<SelfIntroduction> selfIntroductions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Club> clubs;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ReviewComment> reviewComments;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Chat> chats;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<CultureInterest> cultureInterests;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ClubMember> clubMembers;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Manner> manners;
 
     @Builder

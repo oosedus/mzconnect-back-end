@@ -33,7 +33,7 @@ public class Culture {
     private String summary;
 
     @Column(nullable = false)
-    private int cultureCount;
+    private int clubCount;
 
     @Column(length = 100, nullable = false)
     private String recommendedMember;
@@ -52,13 +52,13 @@ public class Culture {
     private List<Review> reviews;
 
     @Builder
-    public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int cultureCount, String recommendedMember, CultureCategory cultureCategory) {
+    public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int clubCount, String recommendedMember, CultureCategory cultureCategory) {
         this.interestCount = interestCount;
         this.content = content;
         this.cultureImageUrl = cultureImageUrl;
         this.name = name;
         this.summary = summary;
-        this.cultureCount = cultureCount;
+        this.clubCount = clubCount;
         this.recommendedMember = recommendedMember;
         this.cultureCategory = cultureCategory;
     }

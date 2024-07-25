@@ -4,8 +4,8 @@ import likelion.MZConnent.domain.culture.CultureCategory;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.member.Role;
 import likelion.MZConnent.domain.member.SelfIntroduction;
-import likelion.MZConnent.dto.member.CreateMemberRequest;
-import likelion.MZConnent.dto.member.MemberInfoDto;
+import likelion.MZConnent.dto.member.request.CreateMemberRequest;
+import likelion.MZConnent.dto.member.response.MemberInfoResponse;
 import likelion.MZConnent.jwt.blacklist.AccessTokenBlackList;
 import likelion.MZConnent.jwt.token.TokenProvider;
 import likelion.MZConnent.jwt.token.TokenResponse;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -122,9 +121,6 @@ public class LoginService {
         accessTokenBlackList.setBlackList(accessToken, email);
     }
 
-    public MemberInfoDto getMemberInfo(String email) {
-        return MemberInfoDto.toDto(findMemberByEmail(email));
-    }
 
     // 비밀번호 정책에 맞는지 점검하는 함수
     private void checkPasswordPolicy(String password) {
