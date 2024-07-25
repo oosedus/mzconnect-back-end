@@ -47,6 +47,14 @@ dependencies {
 
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+	// s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// 파일 업로드
+	implementation 'commons-io:commons-io:2.6'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+
 }
 
 tasks.named('test') {
