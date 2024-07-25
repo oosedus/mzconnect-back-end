@@ -7,6 +7,7 @@ import likelion.MZConnent.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Club {
     @Id
@@ -49,10 +51,6 @@ public class Club {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "memberId", nullable = false)
-    private Member member;
-
-    @ManyToOne
     @JoinColumn(name = "cultureId", nullable = false)
     private Culture culture;
 
@@ -60,7 +58,7 @@ public class Club {
     @JoinColumn(name = "regionId", nullable = false)
     private RegionCategory region;
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<Chat> chats;
 
     @OneToMany(mappedBy = "club")
@@ -68,7 +66,7 @@ public class Club {
 
 
     @Builder
-    public Club(String title, LocalDate meetingDate, LocalDateTime createdDate, String content, GenderRestriction genderRestriction, AgeRestriction ageRestriction, int currentParticipant, int maxParticipant, String status, Member member, Culture culture, RegionCategory region) {
+    public Club(String title, LocalDate meetingDate, LocalDateTime createdDate, String content, GenderRestriction genderRestriction, AgeRestriction ageRestriction, int currentParticipant, int maxParticipant, String status, Culture culture, RegionCategory region) {
         this.title = title;
         this.meetingDate = meetingDate;
         this.createdDate = createdDate;
@@ -78,7 +76,6 @@ public class Club {
         this.currentParticipant = currentParticipant;
         this.maxParticipant = maxParticipant;
         this.status = status;
-        this.member = member;
         this.culture = culture;
         this.region = region;
     }

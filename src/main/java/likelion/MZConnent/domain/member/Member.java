@@ -60,8 +60,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<SelfIntroduction> selfIntroductions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Club> clubs;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ReviewComment> reviewComments;

@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +47,13 @@ public class ClubController {
         RegionCategoryResponse all = regionCategoryService.getAllRegionCategories();
         log.info("전체 지역 카테고리: {}", all.getRegionCategories());
         return ResponseEntity.ok(all);
+    }
+
+    @PostMapping("/api/clubs/{clubId}/join")
+    public ResponseEntity joinClub(@PathVariable Long clubId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        String email = userPrinciple.getEmail();
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        clubService.joinClub(clubId, member);
+        return ResponseEntity.ok(Map.of("message","모임 가입 성공"));
     }
 }

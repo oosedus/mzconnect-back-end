@@ -1,11 +1,9 @@
 package likelion.MZConnent.service.club;
 
 import jakarta.transaction.Transactional;
-import likelion.MZConnent.domain.club.Club;
-import likelion.MZConnent.domain.club.ClubMember;
-import likelion.MZConnent.domain.club.ClubRole;
-import likelion.MZConnent.domain.club.RegionCategory;
+import likelion.MZConnent.domain.club.*;
 import likelion.MZConnent.domain.culture.Culture;
+import likelion.MZConnent.domain.member.Gender;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
 import likelion.MZConnent.dto.club.response.CreateClubResponse;
@@ -79,4 +77,38 @@ public class ClubService {
         );
     }
 
+    @Transactional
+    public void joinClub(Long clubId, Member member) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 클럽입니다."));
+
+        validateJoinClub(club, member);
+
+        ClubMember clubMember = ClubMember.builder()
+                .club(club)
+                .member(member)
+                .clubRole(ClubRole.MEMBER)
+                .build();
+
+        clubMemberRepository.save(clubMember);
+        club.setCurrentParticipant(club.getCurrentParticipant() + 1);
+    }
+
+    private void validateJoinClub(Club club, Member member) {
+        if (clubMemberRepository.findByClubAndMember(club, member).isPresent()) {
+            throw new IllegalArgumentException("이미 가입한 클럽입니다.");
+        }
+
+        if (club.getCurrentParticipant() >= club.getMaxParticipant()) {
+            throw new IllegalArgumentException("정원이 초과되어 가입할 수 없습니다.");
+        }
+
+        if (club.getAgeRestriction() != AgeRestriction.ALL && !(club.getAgeRestriction().equals(member.getAge()))) {
+            throw new IllegalArgumentException("나이 제한으로 가입할 수 없습니다.");
+        }
+
+        if (club.getGenderRestriction() != GenderRestriction.ALL && !(club.getGenderRestriction().equals(member.getGender()))) {
+            throw new IllegalArgumentException("성별 제한으로 가입할 수 없습니다.");
+        }
+    }
 }
