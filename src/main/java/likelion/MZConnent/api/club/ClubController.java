@@ -4,19 +4,18 @@ import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
 import likelion.MZConnent.dto.club.response.CreateClubResponse;
+import likelion.MZConnent.dto.club.response.RegionCategoryResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.repository.member.MemberRepository;
 import likelion.MZConnent.service.club.ClubService;
+import likelion.MZConnent.service.club.RegionCategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClubController {
     private final ClubService clubService;
     private final MemberRepository memberRepository;
+    private final RegionCategoryService regionCategoryService;
 
     @PostMapping("/api/clubs")
     public ResponseEntity<CreateClubResponse> createClub(@Valid @RequestBody CreateClubRequest request, @AuthenticationPrincipal UserPrinciple userPrinciple, BindingResult bindingResult) {
@@ -38,5 +38,12 @@ public class ClubController {
 
         CreateClubResponse response = clubService.createClub(request, member);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/categories/region")
+    public ResponseEntity<RegionCategoryResponse> getAllRegionCategories() {
+        RegionCategoryResponse all = regionCategoryService.getAllRegionCategories();
+        log.info("전체 지역 카테고리: {}", all.getRegionCategories());
+        return ResponseEntity.ok(all);
     }
 }
