@@ -1,4 +1,4 @@
-package likelion.MZConnent.dto.member;
+package likelion.MZConnent.dto.member.request;
 
 
 import jakarta.persistence.EnumType;

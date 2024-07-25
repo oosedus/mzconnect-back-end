@@ -1,8 +1,8 @@
-package likelion.MZConnent.dto.culture;
+package likelion.MZConnent.dto.culture.response;
 
 import likelion.MZConnent.domain.culture.CultureCategory;
+import likelion.MZConnent.dto.culture.CultureCategoryDto;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,14 +22,5 @@ public class CultureCategoryResponse {
                 .collect(Collectors.toList());
     }
 
-    @Getter
-    private static class CultureCategoryDto {
-        private Long cultureCategoryId;
-        private String name;
 
-        public CultureCategoryDto(CultureCategory cultureCategory) {
-            this.cultureCategoryId = cultureCategory.getId();
-            this.name = cultureCategory.getName();
-        }
-    }
 }

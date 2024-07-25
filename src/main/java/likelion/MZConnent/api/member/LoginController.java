@@ -1,9 +1,9 @@
 package likelion.MZConnent.api.member;
 
 import jakarta.validation.Valid;
-import likelion.MZConnent.dto.member.CreateMemberRequest;
-import likelion.MZConnent.dto.member.LoginMemberRequest;
-import likelion.MZConnent.dto.member.MemberInfoDto;
+import likelion.MZConnent.dto.member.request.CreateMemberRequest;
+import likelion.MZConnent.dto.member.request.LoginMemberRequest;
+import likelion.MZConnent.dto.member.response.MemberInfoResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.jwt.token.TokenResponse;
 import likelion.MZConnent.service.member.LoginService;
@@ -59,18 +59,5 @@ public class LoginController {
         loginService.logoout(authHeader.substring(7), email);
 
         return ResponseEntity.ok(Map.of("message", "로그아웃 성공"));
-    }
-
-    @GetMapping("/user/info")
-    public ResponseEntity<MemberInfoDto> getMemberInfo(@AuthenticationPrincipal UserPrinciple userPrinciple){
-        String email = userPrinciple.getEmail();
-        MemberInfoDto memberInfoDto = loginService.getMemberInfo(email);
-
-        return ResponseEntity.ok(memberInfoDto);
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        return "test";
     }
 }
