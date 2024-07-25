@@ -3,10 +3,12 @@ package likelion.MZConnent.api.club;
 import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
+import likelion.MZConnent.dto.club.response.ClubDetailResponse;
 import likelion.MZConnent.dto.club.response.CreateClubResponse;
 import likelion.MZConnent.dto.club.response.RegionCategoryResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.repository.member.MemberRepository;
+import likelion.MZConnent.service.club.ClubInfoService;
 import likelion.MZConnent.service.club.ClubService;
 import likelion.MZConnent.service.club.RegionCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ClubController {
     private final ClubService clubService;
+    private final ClubInfoService clubInfoService;
     private final MemberRepository memberRepository;
     private final RegionCategoryService regionCategoryService;
 
@@ -55,5 +58,19 @@ public class ClubController {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
         clubService.joinClub(clubId, member);
         return ResponseEntity.ok(Map.of("message","모임 가입 성공"));
+    }
+
+    @GetMapping("/api/clubs/{clubId}")
+    public ResponseEntity<ClubDetailResponse> getClubDetail(@PathVariable Long clubId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        ClubDetailResponse clubDetail;
+        if (userPrinciple == null) {
+            clubDetail = clubInfoService.getClubDetail(clubId);
+        } else {
+            Member member = memberRepository.findByEmail(userPrinciple.getEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+            clubDetail = clubInfoService.getClubDetail(clubId, member);
+        }
+
+        return ResponseEntity.ok(clubDetail);
     }
 }

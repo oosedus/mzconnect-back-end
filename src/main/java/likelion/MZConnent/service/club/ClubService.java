@@ -3,7 +3,6 @@ package likelion.MZConnent.service.club;
 import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.club.*;
 import likelion.MZConnent.domain.culture.Culture;
-import likelion.MZConnent.domain.member.Gender;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
 import likelion.MZConnent.dto.club.response.CreateClubResponse;
@@ -36,7 +35,7 @@ public class ClubService {
                 .meetingDate(request.getMeetingDate())
                 .createdDate(LocalDateTime.now())
                 .maxParticipant(request.getMaxParticipant())
-                .currentParticipant(0)
+                .currentParticipant(1)
                 .content(request.getContent())
                 .genderRestriction(request.getGenderRestriction())
                 .ageRestriction(request.getAgeRestriction())
@@ -92,6 +91,10 @@ public class ClubService {
 
         clubMemberRepository.save(clubMember);
         club.setCurrentParticipant(club.getCurrentParticipant() + 1);
+
+        if(club.getCurrentParticipant() == club.getMaxParticipant()) {
+            club.setStatus("CLOSE");
+        }
     }
 
     private void validateJoinClub(Club club, Member member) {
