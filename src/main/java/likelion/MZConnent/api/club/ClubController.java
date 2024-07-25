@@ -2,10 +2,9 @@ package likelion.MZConnent.api.club;
 
 import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
+import likelion.MZConnent.dto.club.request.ClubSimpleRequest;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
-import likelion.MZConnent.dto.club.response.ClubDetailResponse;
-import likelion.MZConnent.dto.club.response.CreateClubResponse;
-import likelion.MZConnent.dto.club.response.RegionCategoryResponse;
+import likelion.MZConnent.dto.club.response.*;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.repository.member.MemberRepository;
 import likelion.MZConnent.service.club.ClubInfoService;
@@ -13,12 +12,18 @@ import likelion.MZConnent.service.club.ClubService;
 import likelion.MZConnent.service.club.RegionCategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -72,5 +77,23 @@ public class ClubController {
         }
 
         return ResponseEntity.ok(clubDetail);
+    }
+
+    @GetMapping("/api/clubs/list")
+    public ResponseEntity<PageContentResponse<ClubSimpleResponse>> getClubList(
+            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "sort", defaultValue = "createdDate") String sortWay,
+            @RequestBody ClubSimpleRequest request) {
+
+        Pageable pageable;
+        if(sortWay.equals("meetingDate")){
+            pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).ascending());
+        }
+        else {
+            pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).descending());
+        }
+
+        PageContentResponse<ClubSimpleResponse> clubList = clubInfoService.getClubList(request, pageable);
+        return ResponseEntity.ok(clubList);
     }
 }
