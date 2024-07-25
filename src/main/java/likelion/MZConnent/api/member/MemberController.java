@@ -25,7 +25,7 @@ public class MemberController {
         MemberInfoResponse memberInfo = memberService.getMemberInfoByEmail(email);
 
         log.info("멤버 정보 조회 성공: {}", memberInfo.getUsername());
-        
+
         return ResponseEntity.ok(memberInfo);
     }
 
