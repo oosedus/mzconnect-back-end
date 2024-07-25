@@ -92,6 +92,10 @@ public class ClubService {
 
         clubMemberRepository.save(clubMember);
         club.setCurrentParticipant(club.getCurrentParticipant() + 1);
+
+        if(club.getCurrentParticipant() == club.getMaxParticipant()) {
+            club.setStatus("CLOSE");
+        }
     }
 
     private void validateJoinClub(Club club, Member member) {
