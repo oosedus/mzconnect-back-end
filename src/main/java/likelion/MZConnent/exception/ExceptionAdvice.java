@@ -41,6 +41,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponseJson> handleRuntimeException(RuntimeException e) {
+        log.info("error: {}", e);
         return new ResponseEntity<>( new ApiResponseJson(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 오류가 발생했습니다."),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
