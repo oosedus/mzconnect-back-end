@@ -19,7 +19,4 @@ public class CultureCategory {
 
     @Column(length = 255, nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "cultureCategory", cascade = CascadeType.ALL)
-    private List<SelfIntroduction> selfIntroductions = new ArrayList<>();
 }

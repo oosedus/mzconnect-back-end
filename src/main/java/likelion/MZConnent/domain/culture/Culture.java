@@ -18,7 +18,7 @@ public class Culture {
     private Long cultureId;
 
     @Column(nullable = false)
-    private int interestCount;
+    private int interestCount = 0;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
@@ -33,7 +33,7 @@ public class Culture {
     private String summary;
 
     @Column(nullable = false)
-    private int clubCount;
+    private int clubCount = 0;
 
     @Column(length = 100, nullable = false)
     private String recommendedMember;
