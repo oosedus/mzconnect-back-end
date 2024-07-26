@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final String[] adminUrl = {"/admin/**"};
     private final String[] permitAllUrl = {"/error",
             "/api/auth/login", "/api/auth/logout", // 회원
-            "/api/categories/culture", // 문화
+            "/api/categories/culture", "/api/cultures", // 문화
             "/api/clubs", "/api/clubs/*/join", // 동아리
             "/api/clubs/*",
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
