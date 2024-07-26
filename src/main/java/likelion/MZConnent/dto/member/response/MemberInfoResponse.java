@@ -3,9 +3,8 @@ package likelion.MZConnent.dto.member.response;
 import likelion.MZConnent.domain.member.Age;
 import likelion.MZConnent.domain.member.Gender;
 import likelion.MZConnent.domain.member.Member;
-import likelion.MZConnent.domain.member.Role;
 import likelion.MZConnent.dto.culture.CultureCategoryDto;
-import likelion.MZConnent.dto.review.ReviewDto;
+import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,7 +26,7 @@ public class MemberInfoResponse {
     private String profileImageUrl;
     private BigDecimal averageMannersScore;
     private List<CultureCategoryDto> selfIntroductions = new ArrayList<>();
-    private List<ReviewDto> reviews = new ArrayList<>();
+    private List<ReviewsSimpleResponse> reviews = new ArrayList<>();
 
 
     public MemberInfoResponse(Member member) {
@@ -44,7 +43,7 @@ public class MemberInfoResponse {
                 .map((selfIntroduction)-> new CultureCategoryDto(selfIntroduction.getCultureCategory()))
                 .collect(Collectors.toList());
         this.reviews = member.getReviews().stream()
-                .map(ReviewDto::new)
+                .map(ReviewsSimpleResponse::new)
                 .collect(Collectors.toList());
     }
 }
