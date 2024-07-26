@@ -11,10 +11,14 @@ import likelion.MZConnent.repository.club.ClubRepository;
 import likelion.MZConnent.repository.club.RegionCategoryRepository;
 import likelion.MZConnent.repository.culture.CultureRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClubService {
@@ -113,5 +117,15 @@ public class ClubService {
         if (club.getGenderRestriction() != GenderRestriction.ALL && !(club.getGenderRestriction().equals(member.getGender()))) {
             throw new IllegalArgumentException("성별 제한으로 가입할 수 없습니다.");
         }
+    }
+
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+    @Transactional
+    public void closeClub() {
+        clubRepository.findAllByStatus("OPEN").stream()
+                .filter(club -> club.getMeetingDate().isBefore(LocalDate.now()))
+                .forEach(club -> {
+                    club.setStatus("CLOSE");
+                });
     }
 }

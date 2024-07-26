@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
@@ -20,5 +22,7 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
     Page<Club> findAllByFilters(@Param("cultureId") Long cultureId,
                                 @Param("regionId") Long regionId,
                                 Pageable pageable);
+
+    Collection<Club> findAllByStatus(String status);
 }
 
