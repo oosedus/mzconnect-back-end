@@ -30,6 +30,7 @@ public class SecurityConfig {
             "/api/auth/login", "/api/auth/logout", // 회원
             "/api/categories/culture", "/api/cultures", // 문화
             "/api/clubs", "/api/clubs/*/join", // 동아리
+            "/api/reviews", // 후기
             "/api/clubs/*",
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
     };

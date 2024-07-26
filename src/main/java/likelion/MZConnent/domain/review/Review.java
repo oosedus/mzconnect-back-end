@@ -37,7 +37,7 @@ public class Review {
     private String reviewImageUrl4;
 
     @Column(nullable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @Column(nullable = false)
     private int likeCount;
@@ -60,14 +60,14 @@ public class Review {
     private List<ReviewLike> reviewLikes;
 
     @Builder
-    public Review(String title, String content, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createDate, int likeCount, int commentCount, Culture culture, Member member) {
+    public Review(String title, String content, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createdDate, int likeCount, int commentCount, Culture culture, Member member) {
         this.title = title;
         this.content = content;
         this.reviewImageUrl1 = reviewImageUrl1 != null ? reviewImageUrl1 : ""; // 나중에 기본 이미지 URL 추가
         this.reviewImageUrl2 = reviewImageUrl2 != null ? reviewImageUrl2 : "";
         this.reviewImageUrl3 = reviewImageUrl3 != null ? reviewImageUrl3 : "";
         this.reviewImageUrl4 = reviewImageUrl4 != null ? reviewImageUrl4 : "";
-        this.createDate = createDate;
+        this.createdDate = createdDate;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
         this.culture = culture;
