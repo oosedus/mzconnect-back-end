@@ -49,10 +49,19 @@ public class S3ImageService {
     }
 
     public void delete(String imageUrl) {
-        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+        String fileName = extractFileName(imageUrl);
         amazonS3Client.deleteObject(bucket, fileName);
         log.info("File deleted from S3: {}", imageUrl);
     }
+
+    private String extractFileName(String imageUrl) {
+        int index = imageUrl.indexOf(".com/");
+        if (index == -1) {
+            throw new IllegalArgumentException("잘못된 S3 URL 형식입니다.");
+        }
+        return imageUrl.substring(index + 5);
+    }
+
 
     // 파일 확장자 체크
     private String validateFileExtension(String originalFilename) {
