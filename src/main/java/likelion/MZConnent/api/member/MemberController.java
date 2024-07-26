@@ -1,15 +1,15 @@
 package likelion.MZConnent.api.member;
 
+import likelion.MZConnent.dto.member.request.UpdateMemberInfoRequest;
 import likelion.MZConnent.dto.member.response.MemberInfoResponse;
+import likelion.MZConnent.dto.member.response.UpdateMemberInfoResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -19,7 +19,7 @@ public class MemberController {
 
 
     // 나의 정보 조회
-    @GetMapping("/api/user/me")
+    @GetMapping("/api/users/me")
     public ResponseEntity<MemberInfoResponse> getMyInfo(@AuthenticationPrincipal UserPrinciple userPrinciple){
         String email = userPrinciple.getEmail();
         MemberInfoResponse memberInfo = memberService.getMemberInfoByEmail(email);
@@ -30,7 +30,7 @@ public class MemberController {
     }
 
     // 타유저 정보 조회
-    @GetMapping("/api/user/{userId}")
+    @GetMapping("/api/users/{userId}")
     public ResponseEntity<MemberInfoResponse> getMemberInfo(@PathVariable("userId") Long userId){
         MemberInfoResponse memberInfo = memberService.getMemberInfoById(userId);
 
@@ -38,4 +38,12 @@ public class MemberController {
 
         return ResponseEntity.ok(memberInfo);
     }
+
+    @PutMapping("/api/users/me")
+    public ResponseEntity<UpdateMemberInfoResponse> updateMyInfo(@RequestBody UpdateMemberInfoRequest request, @AuthenticationPrincipal UserPrinciple userPrinciple){
+        UpdateMemberInfoResponse response = memberService.updateMemberInfo(userPrinciple.getEmail(), request);
+
+        return ResponseEntity.ok(response);
+    }
 }
+
