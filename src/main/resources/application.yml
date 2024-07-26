@@ -1,6 +1,6 @@
 spring:
   config:
-    import: application-local.yml
+    import: application-secret.yml
   jpa:
     hibernate:
       ddl-auto: update
@@ -10,3 +10,8 @@ spring:
           time_zone: Asia/Seoul
         show_sql: true
         highlight_sql : true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+      resolve-lazily: true
