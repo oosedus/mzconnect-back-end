@@ -22,6 +22,8 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 public class Member {
+    public static final String DEFAULT_PROFILE_IMAGE_URL = "https://mzconnect-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.png";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -52,7 +54,7 @@ public class Member {
     private String facebookId;
 
     @Column(columnDefinition = "TEXT")
-    private String profileImageUrl = ""; // TODO: 기본 프로필 이미지 추가
+    private String profileImageUrl = DEFAULT_PROFILE_IMAGE_URL;
 
     @Column(precision = 2, scale = 1)
     private BigDecimal averageMannersScore = BigDecimal.valueOf(4);
