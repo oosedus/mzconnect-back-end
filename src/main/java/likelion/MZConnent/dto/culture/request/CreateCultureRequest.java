@@ -22,4 +22,6 @@ public class CreateCultureRequest {
     private String recommendedMember;
 
     private Long cultureCategoryId;
+
+    private Long regionId;
 }

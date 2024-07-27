@@ -1,5 +1,6 @@
 package likelion.MZConnent.domain.culture;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.MZConnent.domain.club.Club;
 import likelion.MZConnent.domain.club.RegionCategory;
@@ -45,6 +46,7 @@ public class Culture {
 
     @ManyToOne
     @JoinColumn(name = "region_id")
+    @JsonIgnore
     private RegionCategory region;
 
     @OneToMany(mappedBy = "culture")
@@ -58,7 +60,7 @@ public class Culture {
 
 
     @Builder
-    public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int clubCount, String recommendedMember, CultureCategory cultureCategory) {
+    public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int clubCount, String recommendedMember, CultureCategory cultureCategory, RegionCategory region) {
         this.interestCount = interestCount;
         this.content = content;
         this.cultureImageUrl = cultureImageUrl;
@@ -67,5 +69,6 @@ public class Culture {
         this.clubCount = clubCount;
         this.recommendedMember = recommendedMember;
         this.cultureCategory = cultureCategory;
+        this.region = region;
     }
 }
