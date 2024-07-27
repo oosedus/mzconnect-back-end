@@ -2,6 +2,7 @@ package likelion.MZConnent.domain.culture;
 
 import jakarta.persistence.*;
 import likelion.MZConnent.domain.club.Club;
+import likelion.MZConnent.domain.club.RegionCategory;
 import likelion.MZConnent.domain.review.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,6 +43,10 @@ public class Culture {
     @JoinColumn(name = "cultureCategoryId", nullable = false)
     private CultureCategory cultureCategory;
 
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private RegionCategory region;
+
     @OneToMany(mappedBy = "culture")
     private List<Club> clubs;
 
@@ -50,6 +55,7 @@ public class Culture {
 
     @OneToMany(mappedBy = "culture")
     private List<Review> reviews;
+
 
     @Builder
     public Culture(int interestCount, String content, String cultureImageUrl, String name, String summary, int clubCount, String recommendedMember, CultureCategory cultureCategory) {
