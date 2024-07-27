@@ -1,5 +1,6 @@
 package likelion.MZConnent.service.image;
 
+import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import java.io.IOException;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MemberProfileService {
     private final S3ImageService s3ImageService;
     private final MemberRepository memberRepository;
