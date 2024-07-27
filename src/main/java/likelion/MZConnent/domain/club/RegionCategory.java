@@ -1,6 +1,7 @@
 package likelion.MZConnent.domain.club;
 
 import jakarta.persistence.*;
+import likelion.MZConnent.domain.culture.Culture;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,5 +21,7 @@ public class RegionCategory {
     @OneToMany(mappedBy = "region")
     private List<Club> clubs;
 
+    @OneToMany(mappedBy = "region")
+    private List<Culture> cultures;
 }
 

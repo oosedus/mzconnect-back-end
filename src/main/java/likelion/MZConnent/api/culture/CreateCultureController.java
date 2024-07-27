@@ -1,8 +1,10 @@
 package likelion.MZConnent.api.culture;
 
+import likelion.MZConnent.domain.club.RegionCategory;
 import likelion.MZConnent.domain.culture.Culture;
 import likelion.MZConnent.domain.culture.CultureCategory;
 import likelion.MZConnent.dto.culture.request.CreateCultureRequest;
+import likelion.MZConnent.repository.club.RegionCategoryRepository;
 import likelion.MZConnent.repository.culture.CultureCategoryRepository;
 import likelion.MZConnent.repository.culture.CultureRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.Random;
 public class CreateCultureController {
     private final CultureRepository cultureRepository;
     private final CultureCategoryRepository cultureCategoryRepository;
+    private final RegionCategoryRepository regionCategoryRepository;
 
     @PostMapping("/api/cultures")
     public ResponseEntity<Culture> createCulture(@RequestBody CreateCultureRequest request) {
@@ -29,6 +32,8 @@ public class CreateCultureController {
         log.info("culture request: {}", request);
 
         CultureCategory cultureCategory = cultureCategoryRepository.findById(request.getCultureCategoryId()).orElseThrow(()-> new IllegalArgumentException("해당하는 카테고리가 존재하지 않습니다."));
+
+        RegionCategory regionCategory = regionCategoryRepository.findById(request.getRegionId()).orElseThrow(()-> new IllegalArgumentException("해당하는 지역이 존재하지 않습니다."));
 
         Culture newCulture = Culture.builder()
                 .name(request.getName())
@@ -38,6 +43,7 @@ public class CreateCultureController {
                         .getCultureImageUrl())
                 .recommendedMember(request.getRecommendedMember())
                 .cultureCategory(cultureCategory)
+                .region(regionCategory)
                 .build();
 
         Culture savedCulture = cultureRepository.save(newCulture);
