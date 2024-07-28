@@ -42,4 +42,22 @@ public class CultureService {
                 .build();
 
     }
+
+    public PageContentResponse<CulturesSimpleResponse> getMyIntersetCulturesSimpleList(String email, Long cultureCategoryId, int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+
+        Page<Culture> cultures = cultureRepository.findByMemberAndCategory(email, cultureCategoryId, pageable);
+
+        List<CulturesSimpleResponse> cultureResponse = cultures.stream().map(culture -> CulturesSimpleResponse.builder()
+                .culture(culture).build()
+        ).collect(Collectors.toList());
+
+        return PageContentResponse.<CulturesSimpleResponse>builder()
+                .content(cultureResponse)
+                .totalPages(cultures.getTotalPages())
+                .totalElements(cultures.getTotalElements())
+                .size(pageable.getPageSize())
+                .build();
+
+    }
 }
