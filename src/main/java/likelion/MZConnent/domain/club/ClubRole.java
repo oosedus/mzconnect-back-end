@@ -1,5 +1,7 @@
 package likelion.MZConnent.domain.club;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,10 +13,12 @@ public enum ClubRole {
 
     private final String clubRole;
 
+    @JsonValue
     public String getClubRole() {
         return clubRole;
     }
 
+    @JsonProperty
     public static ClubRole fromRole(String role) {
         for (ClubRole cR : ClubRole.values()) {
             if (cR.getClubRole().equals(role)) {

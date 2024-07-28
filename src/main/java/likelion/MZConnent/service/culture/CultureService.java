@@ -2,6 +2,7 @@ package likelion.MZConnent.service.culture;
 
 import likelion.MZConnent.domain.culture.Culture;
 import likelion.MZConnent.domain.review.Review;
+import likelion.MZConnent.dto.culture.response.CultureDetailResponse;
 import likelion.MZConnent.dto.culture.response.CulturesSimpleResponse;
 import likelion.MZConnent.dto.paging.response.PageContentResponse;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
@@ -14,12 +15,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class CultureService {
     private final CultureRepository cultureRepository;
@@ -41,5 +44,32 @@ public class CultureService {
                 .size(pageable.getPageSize())
                 .build();
 
+    }
+
+    public PageContentResponse<CulturesSimpleResponse> getMyIntersetCulturesSimpleList(String email, Long cultureCategoryId, int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+
+        Page<Culture> cultures = cultureRepository.findByMemberAndCategory(email, cultureCategoryId, pageable);
+
+        List<CulturesSimpleResponse> cultureResponse = cultures.stream().map(culture -> CulturesSimpleResponse.builder()
+                .culture(culture).build()
+        ).collect(Collectors.toList());
+
+        return PageContentResponse.<CulturesSimpleResponse>builder()
+                .content(cultureResponse)
+                .totalPages(cultures.getTotalPages())
+                .totalElements(cultures.getTotalElements())
+                .size(pageable.getPageSize())
+                .build();
+
+    }
+
+    public CultureDetailResponse getCultureDetailInfo(Long cultureId) {
+        Culture culture = cultureRepository.findById(cultureId).orElseThrow(() -> {
+            log.info("해당 문화가 존재하지 않습니다.");
+            return new IllegalArgumentException("해당 문화가 존재하지 않습니다.");
+        });
+        return CultureDetailResponse.builder()
+                .culture(culture).build();
     }
 }

@@ -1,6 +1,5 @@
 package likelion.MZConnent.config;
 
-import jakarta.servlet.http.HttpServletRequest;
 import likelion.MZConnent.jwt.JwtAccessDeniedHandler;
 import likelion.MZConnent.jwt.JwtAuthenticationEntryPoint;
 import likelion.MZConnent.jwt.JwtFilter;
@@ -31,19 +30,30 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtFilter jwtFilter;
 
-    //권한별 url
+    /**
+     * 권한별 URI
+     */
+
+    // 관리자 권한
     private final String[] adminUrl = {"/admin/**"};
-    // 아무나 접속 가능한 것
+
+    // 인증된 사용자만 접근 가능한 URI (permitAllUrl과 겹치는 경우에만 추가 -> 미인증 사용자가 접근하는 URI는 모두 인가가 필요하게 설정되어 있어 추가할 필요 없음)
+    private final String[] authenticatedUrl = {
+            "/api/cultures/interest"
+    };
+
+    // 아무나 접근 가능한 URI
     private final String[] permitAllUrl = {"/error",
             "/api/auth/login", // 회원
-            "/api/categories/culture", "/api/cultures", "/api/cultures/*", // 문화
+            "/api/categories/culture", "/api/cultures", "/api/cultures/**", // 문화
             "/api/reviews", // 후기
             "/api/categories/region", "/api/clubs/list",
             "/api/main",
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
             "/api/test"
     };
-    // 로그인 안한 사용자만 접속 가능한 것
+
+    // 인증되지 않은 사용자만 접근 가능한 URI
     private final String[] anonymousUrl = {
             "/api/auth/signup"
     };
@@ -63,8 +73,9 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth // 접근 url 권한 관리
+                .authorizeHttpRequests(auth -> auth // 접근 uri 권한 관리
                         .requestMatchers(adminUrl).hasAnyRole("ADMIN")
+                        .requestMatchers(authenticatedUrl).authenticated()
                         .requestMatchers(permitAllUrl).permitAll()
                         .requestMatchers(anonymousUrl).anonymous()
                         .anyRequest().authenticated() // 이 외의 url은 인증받은 사용자만 접근 가능
