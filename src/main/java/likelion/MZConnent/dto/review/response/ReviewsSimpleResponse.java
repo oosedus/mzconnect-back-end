@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class ReviewsSimpleResponse {
     private Long reviewId;
     private MemberProfileDto reviewer;

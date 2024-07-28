@@ -1,6 +1,7 @@
 package likelion.MZConnent.api.culture;
 
 import likelion.MZConnent.dto.culture.response.CultureCategoryResponse;
+import likelion.MZConnent.dto.culture.response.CultureDetailResponse;
 import likelion.MZConnent.dto.culture.response.CulturesSimpleResponse;
 import likelion.MZConnent.dto.paging.response.PageContentResponse;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +35,7 @@ public class CultureController {
 
     // 전체 문화 간단 조회
     @GetMapping("/api/cultures")
-    ResponseEntity<PageContentResponse> getCulturesSimpleList(@RequestParam(required = false, defaultValue = "0", value = "category") Long category, @RequestParam(required = false, defaultValue = "0", value = "page") int page ) {
+    public ResponseEntity<PageContentResponse> getCulturesSimpleList(@RequestParam(required = false, defaultValue = "0", value = "category") Long category, @RequestParam(required = false, defaultValue = "0", value = "page") int page) {
 
         PageContentResponse<CulturesSimpleResponse> response = cultureService.getCulturesSimpleList(category, page);
         return ResponseEntity.ok(response);
@@ -42,9 +44,18 @@ public class CultureController {
 
     // 나의 관심 문화 간단 조회
     @GetMapping("/api/cultures/interest")
-    ResponseEntity<PageContentResponse> getMyInterestCulturesSimpleList(@RequestParam(required = false, defaultValue = "0", value = "category") Long category, @RequestParam(required = false, defaultValue = "0", value = "page") int page, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+    public ResponseEntity<PageContentResponse> getMyInterestCulturesSimpleList(@RequestParam(required = false, defaultValue = "0", value = "category") Long category, @RequestParam(required = false, defaultValue = "0", value = "page") int page, @AuthenticationPrincipal UserPrinciple userPrinciple) {
 
         PageContentResponse<CulturesSimpleResponse> response = cultureService.getMyIntersetCulturesSimpleList(userPrinciple.getEmail(), category, page);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/cultures/{cultureId}")
+    public ResponseEntity<CultureDetailResponse> getCultureDetailInfo(@PathVariable("cultureId") Long cultureId) {
+        CultureDetailResponse response = cultureService.getCultureDetailInfo(cultureId);
+
+        log.info("문화 정보 조회 성공: {}", response.getCultureId());
+
         return ResponseEntity.ok(response);
     }
 }
