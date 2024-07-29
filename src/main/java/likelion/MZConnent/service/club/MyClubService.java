@@ -2,7 +2,8 @@ package likelion.MZConnent.service.club;
 
 import likelion.MZConnent.domain.club.Club;
 import likelion.MZConnent.domain.member.Member;
-import likelion.MZConnent.dto.club.response.ClubSimpleResponse;
+import likelion.MZConnent.dto.club.SelfIntroductionDto;
+import likelion.MZConnent.dto.club.response.MyClubDetailResponse;
 import likelion.MZConnent.dto.club.response.MyClubSimpleResponse;
 import likelion.MZConnent.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,11 @@ public class MyClubService {
     private final MemberRepository memberRepository;
 
     public MyClubSimpleResponse getMyClubs(String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        Member member = getMemberByEmail(email);
         List<Club> clubList = getClubsByMember(member);
 
         List<MyClubSimpleResponse.MyClubSimpleDto> myClubs = clubList.stream()
-                .map(this::convertToDto)
+                .map(this::convertToSimpleDto)
                 .collect(Collectors.toList());
 
         return MyClubSimpleResponse.builder()
@@ -38,7 +38,7 @@ public class MyClubService {
                 .collect(Collectors.toList());
     }
 
-    private MyClubSimpleResponse.MyClubSimpleDto convertToDto(Club club) {
+    private MyClubSimpleResponse.MyClubSimpleDto convertToSimpleDto(Club club) {
         return MyClubSimpleResponse.MyClubSimpleDto.builder()
                 .clubId(club.getClubId())
                 .title(club.getTitle())
@@ -47,5 +47,62 @@ public class MyClubService {
                 .currentParticipant(club.getClubMembers().size())
                 .maxParticipant(club.getMaxParticipant())
                 .build();
+    }
+
+    public MyClubDetailResponse getMyClubDetail(String email, Long clubId) {
+        Member member = getMemberByEmail(email);
+        Club club = getClubByMemberAndId(member, clubId);
+
+        MyClubDetailResponse.MyClubCultureDto cultureDto = convertToCultureDto(club);
+        List<MyClubDetailResponse.MyClubMemberDto> memberDtos = convertToMemberDtos(club);
+
+        return MyClubDetailResponse.builder()
+                .clubId(club.getClubId())
+                .title(club.getTitle())
+                .meetingDate(club.getMeetingDate())
+                .content(club.getContent())
+                .currentParticipant(club.getClubMembers().size())
+                .culture(cultureDto)
+                .members(memberDtos)
+                .build();
+    }
+
+    private Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
+
+    private Club getClubByMemberAndId(Member member, Long clubId) {
+        return member.getClubMembers().stream()
+                .map(cm -> cm.getClub())
+                .filter(c -> c.getClubId().equals(clubId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 클럽을 찾을 수 없습니다."));
+    }
+
+    private MyClubDetailResponse.MyClubCultureDto convertToCultureDto(Club club) {
+        return MyClubDetailResponse.MyClubCultureDto.builder()
+                .cultureId(club.getCulture().getCultureId())
+                .name(club.getCulture().getName())
+                .build();
+    }
+
+    private List<MyClubDetailResponse.MyClubMemberDto> convertToMemberDtos(Club club) {
+        return club.getClubMembers().stream()
+                .map(cm -> MyClubDetailResponse.MyClubMemberDto.builder()
+                        .userId(cm.getMember().getId())
+                        .username(cm.getMember().getUsername())
+                        .profileImageUrl(cm.getMember().getProfileImageUrl())
+                        .age(cm.getMember().getAge())
+                        .gender(cm.getMember().getGender())
+                        .role(cm.getClubRole())
+                        .selfIntroductions(cm.getMember().getSelfIntroductions().stream()
+                                .map(si -> SelfIntroductionDto.builder()
+                                        .cultureCategoryId(si.getCultureCategory().getId())
+                                        .name(si.getCultureCategory().getName())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
     }
 }
