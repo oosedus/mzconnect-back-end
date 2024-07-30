@@ -111,12 +111,16 @@ public class ClubService {
             throw new IllegalArgumentException("정원이 초과되어 가입할 수 없습니다.");
         }
 
-        if (club.getAgeRestriction() != AgeRestriction.ALL && !(club.getAgeRestriction().equals(member.getAge()))) {
+        if (!club.getAgeRestriction().equals(AgeRestriction.ALL) && !club.getAgeRestriction().getAgeRestriction().equals(member.getAge().getName())) {
             throw new IllegalArgumentException("나이 제한으로 가입할 수 없습니다.");
         }
 
-        if (club.getGenderRestriction() != GenderRestriction.ALL && !(club.getGenderRestriction().equals(member.getGender()))) {
+        if (!club.getGenderRestriction().equals(GenderRestriction.ALL) && !club.getGenderRestriction().equals(member.getGender())) {
             throw new IllegalArgumentException("성별 제한으로 가입할 수 없습니다.");
+        }
+
+        if (club.getStatus().equals("CLOSE")) {
+            throw new IllegalArgumentException("모임이 마감되어 가입할 수 없습니다.");
         }
     }
 
