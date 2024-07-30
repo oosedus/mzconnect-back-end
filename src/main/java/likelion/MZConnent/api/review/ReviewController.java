@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,4 +59,16 @@ public class ReviewController {
              return ResponseEntity.status(500).body(null);
          }
      }
+
+    // 후기 좋아요 토글
+    @PutMapping("/api/reviews/{reviewId}/likes")
+    public ResponseEntity<Map<String, String>> toggleReviewLike(@PathVariable("reviewId") Long reviewId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        boolean status = reviewService.toggleReviewLike(userPrinciple.getEmail(), reviewId);
+
+        if (status) {
+            return ResponseEntity.ok(Map.of("message", "후기 좋아요 추가 성공"));
+        } else {
+            return ResponseEntity.ok(Map.of("message", "후기 좋아요 삭제 성공"));
+        }
+    }
 }
