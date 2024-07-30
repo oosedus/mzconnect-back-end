@@ -9,9 +9,11 @@ import likelion.MZConnent.domain.member.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Manner {
     @Id
@@ -26,7 +28,7 @@ public class Manner {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "clubMemberId", nullable = false)
+    @JoinColumn(name = "clubMemberId", nullable = true)
     private ClubMember clubMember;
 
     @Builder

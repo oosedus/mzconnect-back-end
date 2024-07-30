@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -46,4 +48,21 @@ public class MyClubController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/api/clubs/{clubId}/close")
+    public ResponseEntity closeClub(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId) {
+        myClubService.closeClub(userPrinciple.getEmail(), clubId);
+        return ResponseEntity.ok(Map.of("messege","모임 마감 성공"));
+    }
+
+    @DeleteMapping("/api/clubs/{clubId}/members/{memberId}")
+    public ResponseEntity deleteMember(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @PathVariable Long memberId) {
+        myClubService.deleteClubMember(userPrinciple.getEmail(), clubId, memberId);
+        return ResponseEntity.ok(Map.of("messege","멤버 추방 성공"));
+    }
+
+    @PostMapping("/api/clubs/{clubId}/leave")
+    public ResponseEntity leaveClub(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId) {
+        myClubService.leaveClub(userPrinciple.getEmail(), clubId);
+        return ResponseEntity.ok(Map.of("messege","모임 탈퇴 성공"));
+    }
 }
