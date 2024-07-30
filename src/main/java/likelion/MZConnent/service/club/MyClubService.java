@@ -1,10 +1,13 @@
 package likelion.MZConnent.service.club;
 
 import likelion.MZConnent.domain.club.Club;
+import likelion.MZConnent.domain.club.ClubMember;
+import likelion.MZConnent.domain.club.ClubRole;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.SelfIntroductionDto;
 import likelion.MZConnent.dto.club.response.MyClubDetailResponse;
 import likelion.MZConnent.dto.club.response.MyClubSimpleResponse;
+import likelion.MZConnent.repository.club.ClubRepository;
 import likelion.MZConnent.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MyClubService {
     private final MemberRepository memberRepository;
+    private final ClubRepository clubRepository;
 
     public MyClubSimpleResponse getMyClubs(String email) {
         Member member = getMemberByEmail(email);
@@ -104,5 +108,27 @@ public class MyClubService {
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public void closeClub(String email, Long clubId) {
+        Member member = getMemberByEmail(email);
+        ClubMember clubMember = getClubMemberByMemberAndId(member, clubId);
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 클럽을 찾을 수 없습니다."));
+
+        // 클럽장이 아닌 경우 예외 처리
+        if (!clubMember.getClubRole().equals(ClubRole.LEADER)){
+            throw new IllegalArgumentException("클럽장만 클럽을 종료할 수 있습니다.");
+        }
+
+        club.setStatus("CLOSE");
+        clubRepository.save(club);
+    }
+
+    private ClubMember getClubMemberByMemberAndId(Member member, Long clubId) {
+        return member.getClubMembers().stream()
+                .filter(cm -> cm.getClub().getClubId().equals(clubId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 가입된 모임이 아닙니다."));
     }
 }

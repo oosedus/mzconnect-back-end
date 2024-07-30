@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -44,6 +46,12 @@ public class MyClubController {
     public ResponseEntity<MemberRateResponse> getMemberRateAndCount(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @PathVariable Long evaluateeId) {
         MemberRateResponse response = rateService.getMemberRateCountAndCount(userPrinciple.getEmail(), clubId, evaluateeId);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/api/clubs/{clubId}/close")
+    public ResponseEntity closeClub(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId) {
+        myClubService.closeClub(userPrinciple.getEmail(), clubId);
+        return ResponseEntity.ok(Map.of("messege","모임 마감 성공"));
     }
 
 }
