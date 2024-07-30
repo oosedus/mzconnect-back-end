@@ -1,5 +1,6 @@
 package likelion.MZConnent.api.club;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.ClubSimpleRequest;
@@ -20,7 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
