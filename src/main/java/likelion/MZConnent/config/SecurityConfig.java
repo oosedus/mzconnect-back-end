@@ -44,7 +44,7 @@ public class SecurityConfig {
 
     // 아무나 접근 가능한 URI
     private final String[] permitAllUrl = {"/error",
-            "/api/auth/login", // 회원
+            "/api/auth/login", "/api/auth/email", "/api/auth/username", // 회원
             "/api/categories/culture", "/api/cultures", "/api/cultures/**", // 문화
             "/api/reviews", // 후기
             "/api/categories/region", "/api/clubs/list",

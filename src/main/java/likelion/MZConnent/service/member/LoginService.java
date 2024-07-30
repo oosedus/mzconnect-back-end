@@ -45,18 +45,6 @@ public class LoginService {
         // 비밀번호 정책에 맞는지 점검
         checkPasswordPolicy(request.getPassword());
 
-        // 이미 등록된 이메일인지 점검
-        if (memberRepository.existsByEmail(request.getEmail())) {
-            log.info("이미 등록된 이메일={}", request.getEmail());
-            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
-        }
-
-        // 중복되는 닉네임인지 점검
-        if (memberRepository.existsByUsername(request.getUsername())) {
-            log.info("중복되는 닉네임={}", request.getEmail());
-            throw new IllegalArgumentException("중복되는 닉네임입니다.");
-        }
-
         Member member = Member.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword())) // 비밀번호 암호화
@@ -121,6 +109,22 @@ public class LoginService {
         accessTokenBlackList.setBlackList(accessToken, email);
     }
 
+    // 이메일 중복 점검
+    public void checkDuplicateEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            log.info("이미 등록된 이메일={}", email);
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+        }
+    }
+
+    // 닉네임 중복 점검
+    public void checkDuplicateUsername(String username) {
+        if (memberRepository.existsByUsername(username)) {
+            log.info("중복되는 닉네임={}", username);
+            throw new IllegalArgumentException("중복되는 닉네임입니다.");
+        }
+    }
+
 
     // 비밀번호 정책에 맞는지 점검하는 함수
     private void checkPasswordPolicy(String password) {
@@ -145,5 +149,6 @@ public class LoginService {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
     }
+
 
 }
