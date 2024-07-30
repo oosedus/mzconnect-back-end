@@ -59,8 +59,8 @@ public class CultureController {
     }
 
     // 문화 관심 토글
-    @PostMapping("/api/cultures/{cultureId}/interests")
-    public ResponseEntity<Map<String, String>> addCultureInterest(@PathVariable("cultureId") Long cultureId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+    @PutMapping("/api/cultures/{cultureId}/interests")
+    public ResponseEntity<Map<String, String>> toggleCultureInterest(@PathVariable("cultureId") Long cultureId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
         boolean status = cultureService.toggleCultureInterest(userPrinciple.getEmail(), cultureId);
 
         if (status) {
