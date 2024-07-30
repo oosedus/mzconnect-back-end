@@ -1,5 +1,6 @@
 package likelion.MZConnent.service.review;
 
+import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.culture.Culture;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.review.Review;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final S3ImageService s3ImageService;
