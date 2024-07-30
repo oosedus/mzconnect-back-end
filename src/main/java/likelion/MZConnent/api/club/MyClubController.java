@@ -2,6 +2,7 @@ package likelion.MZConnent.api.club;
 
 import likelion.MZConnent.dto.club.request.EvaluateMemberRequest;
 import likelion.MZConnent.dto.club.response.EvaluateMemberResponse;
+import likelion.MZConnent.dto.club.response.MemberRateResponse;
 import likelion.MZConnent.dto.club.response.MyClubDetailResponse;
 import likelion.MZConnent.dto.club.response.MyClubSimpleResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
@@ -36,6 +37,12 @@ public class MyClubController {
     @PostMapping("/api/clubs/{clubId}/members/{evaluateeId}/rate")
     public ResponseEntity<EvaluateMemberResponse> evaluateMember(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @PathVariable Long evaluateeId, @RequestBody EvaluateMemberRequest request) {
         EvaluateMemberResponse response = rateService.evaluateMember(userPrinciple.getEmail(), clubId, evaluateeId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/clubs/{clubId}/members/{evaluateeId}/rate/count")
+    public ResponseEntity<MemberRateResponse> getMemberRateAndCount(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @PathVariable Long evaluateeId) {
+        MemberRateResponse response = rateService.getMemberRateCountAndCount(userPrinciple.getEmail(), clubId, evaluateeId);
         return ResponseEntity.ok(response);
     }
 

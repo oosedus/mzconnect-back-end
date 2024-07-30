@@ -7,6 +7,7 @@ import likelion.MZConnent.domain.manner.Manner;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.request.EvaluateMemberRequest;
 import likelion.MZConnent.dto.club.response.EvaluateMemberResponse;
+import likelion.MZConnent.dto.club.response.MemberRateResponse;
 import likelion.MZConnent.repository.club.ClubRepository;
 import likelion.MZConnent.repository.manner.MannerRepository;
 import likelion.MZConnent.repository.member.MemberRepository;
@@ -50,6 +51,29 @@ public class RateService {
 
         // 평가자가 해당 멤버에게 평가한 횟수 반환
         return new EvaluateMemberResponse((int) (evaluationCount + 1));
+    }
+
+    public MemberRateResponse getMemberRateCountAndCount(String email, Long clubId, Long evaluateeId) {
+        Member member = getMemberByEmail(email);
+        Member evaluatee = getMemberById(evaluateeId);
+        Club club = getClubById(clubId);
+
+        // 해당 멤버가 해당 모임에 가입되어 있는지 확인
+        ClubMember memberClubMember = getClubMember(club, member);
+        validateClubMember(club, member, evaluatee);
+
+        // 해당 멤버의 평가 점수 평균 조회
+        double averageScore = evaluatee.getAverageMannersScore().doubleValue();
+
+        // 해당 멤버에게 평가한 횟수 조회
+        long evaluationCount = mannerRepository.countByMemberAndClubMember(evaluatee, memberClubMember);
+
+        return MemberRateResponse.builder()
+                .rateCount((int) evaluationCount)
+                .userName(evaluatee.getUsername())
+                .averageMannersScore(BigDecimal.valueOf(averageScore))
+                .profileImageUrl(evaluatee.getProfileImageUrl())
+                .build();
     }
 
     private Member getMemberByEmail(String email) {
