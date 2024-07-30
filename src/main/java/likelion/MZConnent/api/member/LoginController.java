@@ -33,7 +33,7 @@ public class LoginController {
         Long memberId = loginService.createUser(request);
         log.info("회원가입 성공: {}", memberId);
 
-        return ResponseEntity.ok("회원가입 성공");
+        return ResponseEntity.ok(Map.of("message", "회원가입 성공"));
     }
 
     @PostMapping("/api/auth/login")
@@ -50,7 +50,7 @@ public class LoginController {
     }
 
     @PostMapping("/api/auth/logout")
-    public ResponseEntity logout(@AuthenticationPrincipal UserPrinciple userPrinciple, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Map<String, String>> logout(@AuthenticationPrincipal UserPrinciple userPrinciple, @RequestHeader("Authorization") String authHeader) {
         String email = userPrinciple.getEmail();
 
         log.info("로그아웃 이메일: {}", email);
@@ -59,5 +59,17 @@ public class LoginController {
         loginService.logoout(authHeader.substring(7), email);
 
         return ResponseEntity.ok(Map.of("message", "로그아웃 성공"));
+    }
+
+    @GetMapping("/api/auth/email")
+    public ResponseEntity<Map<String, String>> checkDuplicateEmail(@RequestParam("email") String email) {
+        loginService.checkDuplicateEmail(email);
+        return ResponseEntity.ok(Map.of("message", "이메일 중복 점검 성공"));
+    }
+
+    @GetMapping("/api/auth/username")
+    public ResponseEntity<Map<String, String>> checkDuplicateUsername(@RequestParam("username") String username) {
+        loginService.checkDuplicateUsername(username);
+        return ResponseEntity.ok(Map.of("message", "닉네임 중복 점검 성공"));
     }
 }
