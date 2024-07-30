@@ -101,7 +101,7 @@ public class ReviewService {
                         .username(member.getUsername())
                         .profileImage(member.getProfileImageUrl())
                         .build())
-                .culture(SaveReviewResponse.CultureDto.builder()
+                .culture(SaveReviewResponse.ReviewCultureDto.builder()
                         .cultureId(culture.getCultureId())
                         .cultureName(culture.getName())
                         .build())

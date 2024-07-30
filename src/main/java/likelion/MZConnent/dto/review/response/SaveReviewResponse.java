@@ -14,7 +14,7 @@ import java.util.List;
 public class SaveReviewResponse {
     private Long reviewId;
     private ReviewerDto reviewer;
-    private CultureDto culture;
+    private ReviewCultureDto culture;
     private String title;
     private String reviewImageUrl1;
     private String reviewImageUrl2;
@@ -24,7 +24,7 @@ public class SaveReviewResponse {
     private int likeCount;
 
     @Builder
-    public SaveReviewResponse(Long reviewId, ReviewerDto reviewer, CultureDto culture, String title, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createdDate, int likeCount) {
+    public SaveReviewResponse(Long reviewId, ReviewerDto reviewer, ReviewCultureDto culture, String title, String reviewImageUrl1, String reviewImageUrl2, String reviewImageUrl3, String reviewImageUrl4, LocalDateTime createdDate, int likeCount) {
         this.reviewId = reviewId;
         this.reviewer = reviewer;
         this.culture = culture;
@@ -54,12 +54,12 @@ public class SaveReviewResponse {
 
     @Getter
     @NoArgsConstructor
-    public static class CultureDto {
+    public static class ReviewCultureDto {
         private Long cultureId;
         private String cultureName;
 
         @Builder
-        public CultureDto(Long cultureId, String cultureName) {
+        public ReviewCultureDto(Long cultureId, String cultureName) {
             this.cultureId = cultureId;
             this.cultureName = cultureName;
         }
