@@ -12,10 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -57,5 +56,17 @@ public class CultureController {
         log.info("문화 정보 조회 성공: {}", response.getCultureId());
 
         return ResponseEntity.ok(response);
+    }
+
+    // 문화 관심 토글
+    @PostMapping("/api/cultures/{cultureId}/interests")
+    public ResponseEntity<Map<String, String>> addCultureInterest(@PathVariable("cultureId") Long cultureId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        boolean status = cultureService.toggleCultureInterest(userPrinciple.getEmail(), cultureId);
+
+        if (status) {
+            return ResponseEntity.ok(Map.of("message", "관심 문화 추가 성공"));
+        } else {
+            return ResponseEntity.ok(Map.of("message", "관심 문화 삭제 성공"));
+        }
     }
 }

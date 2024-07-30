@@ -1,5 +1,6 @@
 package likelion.MZConnent.service.club;
 
+import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.club.ClubRole;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.LeaderDto;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ClubInfoService {
     private final ClubRepository clubRepository;
