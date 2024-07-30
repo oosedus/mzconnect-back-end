@@ -2,6 +2,7 @@ package likelion.MZConnent.dto.member;
 
 import likelion.MZConnent.domain.member.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class MemberProfileDto {
     private String username;
     private String profileImageUrl = ""; // TODO: 기본 이미지로 초기화
 
+    @Builder
     public MemberProfileDto(Member member) {
         this.userId = member.getId();
         this.username = member.getUsername();
