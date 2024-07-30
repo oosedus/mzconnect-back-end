@@ -32,6 +32,7 @@ public class ClubService {
     public CreateClubResponse createClub(CreateClubRequest request, Member member) {
 
         Culture culture = cultureRepository.findById(request.getCultureId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문화입니다."));
+        culture.setClubCount(culture.getClubCount() + 1);
         RegionCategory region = regionCategoryRepository.findById(request.getRegionId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 지역입니다."));
 
         Club club = Club.builder()
