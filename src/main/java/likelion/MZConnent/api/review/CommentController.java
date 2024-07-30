@@ -27,4 +27,10 @@ public class CommentController {
         return ResponseEntity.ok(comment);
     }
 
+    @DeleteMapping("/api/reviews/{reviewId}/comments/{commentId}")
+    public ResponseEntity<Map<String, String>> deleteComment(@PathVariable("commentId") Long commentId, @AuthenticationPrincipal UserPrinciple userPrinciple) {
+        commentService.deleteComment(userPrinciple.getEmail(), commentId);
+        return ResponseEntity.ok(Map.of("message", "댓글 삭제 성공"));
+    }
+
 }
