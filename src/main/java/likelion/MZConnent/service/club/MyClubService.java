@@ -1,13 +1,17 @@
 package likelion.MZConnent.service.club;
 
+import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.club.Club;
 import likelion.MZConnent.domain.club.ClubMember;
 import likelion.MZConnent.domain.club.ClubRole;
+import likelion.MZConnent.domain.manner.Manner;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.SelfIntroductionDto;
 import likelion.MZConnent.dto.club.response.MyClubDetailResponse;
 import likelion.MZConnent.dto.club.response.MyClubSimpleResponse;
+import likelion.MZConnent.repository.club.ClubMemberRepository;
 import likelion.MZConnent.repository.club.ClubRepository;
+import likelion.MZConnent.repository.manner.MannerRepository;
 import likelion.MZConnent.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +22,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class MyClubService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
+    private final ClubMemberRepository clubMemberRepository;
+    private final MannerRepository mannerRepository;
 
     public MyClubSimpleResponse getMyClubs(String email) {
         Member member = getMemberByEmail(email);
@@ -130,5 +137,30 @@ public class MyClubService {
                 .filter(cm -> cm.getClub().getClubId().equals(clubId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 가입된 모임이 아닙니다."));
+    }
+
+    public void deleteClubMember(String email, Long clubId, Long targetMemberId) {
+        Member member = getMemberByEmail(email);
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 클럽을 찾을 수 없습니다."));
+        Member targetMember = memberRepository.findById(targetMemberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+
+        ClubMember clubMember = getClubMemberByMemberAndId(member, clubId);
+        ClubMember targetClubMember = getClubMemberByMemberAndId(targetMember, clubId);
+
+        // 클럽장이 아닌 경우 예외 처리
+        if (!clubMember.getClubRole().equals(ClubRole.LEADER)){
+            throw new IllegalArgumentException("클럽장만 멤버를 삭제할 수 있습니다.");
+        }
+
+        // 해당 클럽 멤버와 관련된 manner 엔티티의 clubMember 필드를 null로 설정
+        List<Manner> manners = mannerRepository.findByClubMember(targetClubMember);
+        manners.forEach(manner -> manner.setClubMember(null));
+        mannerRepository.saveAll(manners);
+
+        clubMemberRepository.delete(targetClubMember);
+        club.setCurrentParticipant(club.getCurrentParticipant() - 1);
+        clubRepository.save(club);
     }
 }

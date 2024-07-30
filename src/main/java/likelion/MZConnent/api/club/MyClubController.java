@@ -54,4 +54,9 @@ public class MyClubController {
         return ResponseEntity.ok(Map.of("messege","모임 마감 성공"));
     }
 
+    @DeleteMapping("/api/clubs/{clubId}/members/{memberId}")
+    public ResponseEntity deleteMember(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @PathVariable Long memberId) {
+        myClubService.deleteClubMember(userPrinciple.getEmail(), clubId, memberId);
+        return ResponseEntity.ok(Map.of("messege","멤버 추방 성공"));
+    }
 }
