@@ -1,10 +1,8 @@
 package likelion.MZConnent.api.club;
 
 import likelion.MZConnent.dto.club.request.EvaluateMemberRequest;
-import likelion.MZConnent.dto.club.response.EvaluateMemberResponse;
-import likelion.MZConnent.dto.club.response.MemberRateResponse;
-import likelion.MZConnent.dto.club.response.MyClubDetailResponse;
-import likelion.MZConnent.dto.club.response.MyClubSimpleResponse;
+import likelion.MZConnent.dto.club.request.UpdateClubInfoRequest;
+import likelion.MZConnent.dto.club.response.*;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
 import likelion.MZConnent.service.club.MyClubService;
 import likelion.MZConnent.service.club.RateService;
@@ -64,5 +62,11 @@ public class MyClubController {
     public ResponseEntity leaveClub(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId) {
         myClubService.leaveClub(userPrinciple.getEmail(), clubId);
         return ResponseEntity.ok(Map.of("messege","모임 탈퇴 성공"));
+    }
+
+    @PutMapping("/api/clubs/{clubId}")
+    public ResponseEntity<UpdateClubInfoResponse> updateClubInfo(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Long clubId, @RequestBody UpdateClubInfoRequest request){
+        UpdateClubInfoResponse response = myClubService.updateClubInfo(userPrinciple.getEmail(), clubId, request);
+        return ResponseEntity.ok(response);
     }
 }
