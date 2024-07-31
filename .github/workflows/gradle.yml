@@ -58,7 +58,7 @@ jobs:
 
   run-docker-image-on-ec2: #cd
     needs: build-docker-image
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     
