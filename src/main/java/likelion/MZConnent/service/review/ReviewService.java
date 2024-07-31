@@ -2,14 +2,17 @@ package likelion.MZConnent.service.review;
 
 import jakarta.transaction.Transactional;
 import likelion.MZConnent.domain.culture.Culture;
+import likelion.MZConnent.domain.culture.CultureInterest;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.domain.review.Review;
+import likelion.MZConnent.domain.review.ReviewLike;
 import likelion.MZConnent.dto.paging.response.PageContentResponse;
 import likelion.MZConnent.dto.review.request.SaveReviewRequest;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
 import likelion.MZConnent.dto.review.response.SaveReviewResponse;
 import likelion.MZConnent.repository.culture.CultureRepository;
 import likelion.MZConnent.repository.member.MemberRepository;
+import likelion.MZConnent.repository.review.ReviewLikeRepository;
 import likelion.MZConnent.repository.review.ReviewRepository;
 import likelion.MZConnent.service.image.S3ImageService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class ReviewService {
     private final S3ImageService s3ImageService;
     private final MemberRepository memberRepository;
     private final CultureRepository cultureRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
     private final int PAGE_SIZE = 6;
 
     public PageContentResponse<ReviewsSimpleResponse> getReviewsSimpleList(String keyword, int page) {
@@ -61,8 +65,8 @@ public class ReviewService {
     public SaveReviewResponse createReview(String email, SaveReviewRequest request, List<MultipartFile> images, Long cultureId) throws IOException {
         List<String> imageUrls = uploadImages(images);
 
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-        Culture culture = cultureRepository.findById(cultureId).orElseThrow(() -> new IllegalArgumentException("문화 정보를 찾을 수 없습니다."));
+        Member member = findMemberByEmail(email);
+        Culture culture = findCultureById(cultureId);
 
         Review review = buildReview(request, imageUrls, member, culture);
         review = reviewRepository.save(review);
@@ -115,5 +119,55 @@ public class ReviewService {
                 .createdDate(review.getCreatedDate())
                 .likeCount(review.getLikeCount())
                 .build();
+    }
+
+    public boolean toggleReviewLike(String email, Long reviewId) {
+
+        Member member = findMemberByEmail(email);
+        Review review = findReviewById(reviewId);
+
+        boolean exists = reviewLikeRepository.existsByMemberAndReview(member, review);
+
+
+        if (exists) { // 이미 후기 좋아요를 등록한 경우 (삭제)
+            ReviewLike reviewLike = reviewLikeRepository.findByMemberAndReview(member, review).get();
+            reviewLikeRepository.delete(reviewLike);
+
+            member.getReviewLikes().remove(reviewLike);
+            review.getReviewLikes().remove(reviewLike);
+            review.setLikeCount(review.getLikeCount() - 1);
+            return false;
+        }
+        else { // 후기 좋아요를 하지 않은 경우 (추가)
+            ReviewLike reviewLike = reviewLikeRepository.save(ReviewLike.builder()
+                    .member(member)
+                    .review(review)
+                    .build());
+
+            member.getReviewLikes().add(reviewLike);
+            review.getReviewLikes().add(reviewLike);
+            review.setLikeCount(review.getLikeCount() + 1);
+            return true;
+        }
+    }
+
+    private Review findReviewById(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(() -> {
+            log.info("후기 정보를 찾을 수 없음.");
+            return new IllegalArgumentException("후기 정보를 찾을 수 없습니다.");
+        });
+    }
+    private Culture findCultureById(Long cultureId) {
+        return cultureRepository.findById(cultureId).orElseThrow(() -> {
+            log.info("문화 정보를 찾을 수 없음.");
+            return new IllegalArgumentException("문화 정보를 찾을 수 없습니다.");
+        });
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> {
+            log.info("회원 정보를 찾을 수 없음.");
+            return new IllegalArgumentException("회원 정보를 찾을 수 없습니다.");
+        });
     }
 }
