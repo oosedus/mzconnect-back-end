@@ -8,6 +8,7 @@ import likelion.MZConnent.domain.review.Review;
 import likelion.MZConnent.domain.review.ReviewLike;
 import likelion.MZConnent.dto.paging.response.PageContentResponse;
 import likelion.MZConnent.dto.review.request.SaveReviewRequest;
+import likelion.MZConnent.dto.review.response.ReviewDetailResponse;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
 import likelion.MZConnent.dto.review.response.SaveReviewResponse;
 import likelion.MZConnent.repository.culture.CultureRepository;
@@ -149,6 +150,11 @@ public class ReviewService {
             review.setLikeCount(review.getLikeCount() + 1);
             return true;
         }
+    }
+
+    // 후기 상세 정보 조회
+    public ReviewDetailResponse getReviewDetailInfo(Long reviewId) {
+        return ReviewDetailResponse.builder().review(findReviewById(reviewId)).build();
     }
 
     private Review findReviewById(Long reviewId) {
