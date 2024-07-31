@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class MyClubDetailResponse {
+    private Long memberId;
     private Long clubId;
     private String title;
     private LocalDate meetingDate;
@@ -23,7 +24,8 @@ public class MyClubDetailResponse {
     private List<MyClubMemberDto> members;
 
     @Builder
-    public MyClubDetailResponse(Long clubId, String title, LocalDate meetingDate, String content, int currentParticipant, MyClubCultureDto culture, List<MyClubMemberDto> members) {
+    public MyClubDetailResponse(Long memberId, Long clubId, String title, LocalDate meetingDate, String content, int currentParticipant, MyClubCultureDto culture, List<MyClubMemberDto> members) {
+        this.memberId = memberId;
         this.clubId = clubId;
         this.title = title;
         this.meetingDate = meetingDate;

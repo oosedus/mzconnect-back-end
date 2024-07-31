@@ -51,6 +51,7 @@ public class MyClubService {
         List<MyClubDetailResponse.MyClubMemberDto> memberDtos = convertToMemberDtos(club);
 
         return MyClubDetailResponse.builder()
+                .memberId(member.getId())
                 .clubId(club.getClubId())
                 .title(club.getTitle())
                 .meetingDate(club.getMeetingDate())
