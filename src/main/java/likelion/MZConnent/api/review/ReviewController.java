@@ -81,4 +81,10 @@ public class ReviewController {
         log.info("후기 상세 정보: {}", response);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/api/reviews/{reviewId}")
+    public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return ResponseEntity.ok(Map.of("message", "후기 삭제 성공"));
+    }
 }
