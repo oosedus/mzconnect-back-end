@@ -84,9 +84,9 @@ public class ClubInfoService {
                 .build();
     }
 
-    public PageContentResponse<ClubSimpleResponse> getClubList(long categoryId, long regionId, Pageable pageable) {
+    public PageContentResponse<ClubSimpleResponse> getClubList(long cultureCategoryId, long regionId, Pageable pageable) {
         Page<Club> clubs = clubRepository.findAllByFilters(
-                categoryId,
+                cultureCategoryId,
                 regionId,
                 pageable);
 

@@ -78,18 +78,17 @@ public class ClubController {
     public ResponseEntity<PageContentResponse<ClubSimpleResponse>> getClubList(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "sort", defaultValue = "createdDate") String sortWay,
-            @RequestParam(value = "categoryId", defaultValue = "0") int categoryId,
-            @RequestParam(value = "regionId", defaultValue = "0") int regionId) {
+            @RequestParam(value = "cultureCategoryId", required = false, defaultValue = "0") long cultureCategoryId,
+            @RequestParam(value = "regionId", required = false, defaultValue = "0") long regionId) {
 
         Pageable pageable;
-        if(sortWay.equals("meetingDate")){
+        if (sortWay.equals("meetingDate")) {
             pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).ascending());
-        }
-        else {
+        } else {
             pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).descending());
         }
 
-        PageContentResponse<ClubSimpleResponse> clubList = clubInfoService.getClubList(categoryId, regionId, pageable);
+        PageContentResponse<ClubSimpleResponse> clubList = clubInfoService.getClubList(cultureCategoryId, regionId, pageable);
         return ResponseEntity.ok(clubList);
     }
 }
