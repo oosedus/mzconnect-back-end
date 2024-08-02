@@ -5,7 +5,6 @@ import likelion.MZConnent.domain.club.ClubRole;
 import likelion.MZConnent.domain.member.Member;
 import likelion.MZConnent.dto.club.LeaderDto;
 import likelion.MZConnent.dto.club.SelfIntroductionDto;
-import likelion.MZConnent.dto.club.request.ClubSimpleRequest;
 import likelion.MZConnent.dto.club.response.ClubDetailResponse;
 import likelion.MZConnent.dto.club.response.ClubSimpleResponse;
 import likelion.MZConnent.dto.club.response.PageContentResponse;
@@ -85,10 +84,10 @@ public class ClubInfoService {
                 .build();
     }
 
-    public PageContentResponse<ClubSimpleResponse> getClubList(ClubSimpleRequest request, Pageable pageable) {
+    public PageContentResponse<ClubSimpleResponse> getClubList(long categoryId, long regionId, Pageable pageable) {
         Page<Club> clubs = clubRepository.findAllByFilters(
-                request.getCultureId(),
-                request.getRegionId(),
+                categoryId,
+                regionId,
                 pageable);
 
         return new PageContentResponse<>(
