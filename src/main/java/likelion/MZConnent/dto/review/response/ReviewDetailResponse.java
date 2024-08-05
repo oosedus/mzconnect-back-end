@@ -23,6 +23,7 @@ public class ReviewDetailResponse {
     private String reviewImageUrl2;
     private String reviewImageUrl3;
     private String reviewImageUrl4;
+    private String content;
     private LocalDateTime createdDate;
     private int likeCount;
     private List<CommentSimpleDto> comments = new ArrayList<CommentSimpleDto>();
