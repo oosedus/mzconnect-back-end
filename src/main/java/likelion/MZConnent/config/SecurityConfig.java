@@ -46,7 +46,7 @@ public class SecurityConfig {
     private final String[] permitAllUrl = {"/error",
             "/api/auth/login", "/api/auth/email", "/api/auth/username", // 회원
             "/api/categories/culture", "/api/cultures", "/api/cultures/**", // 문화
-            "/api/reviews/*", // 후기
+            "/api/reviews/**", // 후기
             "/api/categories/region", "/api/clubs/list",
             "/api/main",
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
