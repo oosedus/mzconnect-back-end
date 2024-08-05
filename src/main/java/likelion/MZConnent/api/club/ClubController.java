@@ -1,9 +1,7 @@
 package likelion.MZConnent.api.club;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import likelion.MZConnent.domain.member.Member;
-import likelion.MZConnent.dto.club.request.ClubSimpleRequest;
 import likelion.MZConnent.dto.club.request.CreateClubRequest;
 import likelion.MZConnent.dto.club.response.*;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
@@ -80,17 +78,17 @@ public class ClubController {
     public ResponseEntity<PageContentResponse<ClubSimpleResponse>> getClubList(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "sort", defaultValue = "createdDate") String sortWay,
-            @RequestBody ClubSimpleRequest request) {
+            @RequestParam(value = "cultureCategoryId", required = false, defaultValue = "0") long cultureCategoryId,
+            @RequestParam(value = "regionId", required = false, defaultValue = "0") long regionId) {
 
         Pageable pageable;
-        if(sortWay.equals("meetingDate")){
+        if (sortWay.equals("meetingDate")) {
             pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).ascending());
-        }
-        else {
+        } else {
             pageable = PageRequest.of(pageNumber, 6, Sort.by(sortWay).descending());
         }
 
-        PageContentResponse<ClubSimpleResponse> clubList = clubInfoService.getClubList(request, pageable);
+        PageContentResponse<ClubSimpleResponse> clubList = clubInfoService.getClubList(cultureCategoryId, regionId, pageable);
         return ResponseEntity.ok(clubList);
     }
 }
