@@ -37,6 +37,7 @@ public class ReviewDetailResponse {
         this.reviewImageUrl2 = review.getReviewImageUrl2();
         this.reviewImageUrl3 = review.getReviewImageUrl3();
         this.reviewImageUrl4 = review.getReviewImageUrl4();
+        this.content = review.getContent();
         this.createdDate = review.getCreatedDate();
         this.likeCount = review.getLikeCount();
         this.comments = review.getReviewComments().stream()
