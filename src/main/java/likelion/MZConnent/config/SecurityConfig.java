@@ -48,7 +48,7 @@ public class SecurityConfig {
             "/api/categories/culture", "/api/cultures", "/api/cultures/**", // 문화
             "/api/reviews/**", // 후기
             "/api/categories/region", "/api/clubs/list",
-            "/api/main",
+            "/api/main", "/api/clubs/**",
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**", //swagger
             "/api/test"
     };
