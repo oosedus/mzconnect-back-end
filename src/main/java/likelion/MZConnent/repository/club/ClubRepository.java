@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
@@ -27,5 +28,8 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
                                 Pageable pageable);
 
     Collection<Club> findAllByStatus(String status);
+
+    @Query("SELECT c FROM Club c WHERE c.status = 'OPEN' ORDER BY c.createdDate DESC")
+    List<Club> findTop6OrderByCreatedDateDesc(Pageable pageable);
 }
 

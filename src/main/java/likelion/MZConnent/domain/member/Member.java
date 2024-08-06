@@ -22,7 +22,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 public class Member {
-    public static final String DEFAULT_PROFILE_IMAGE_URL = "https://mzconnect-bucket.s3.ap-northeast-2.amazonaws.com/default_image.jpeg";
+    public static final String DEFAULT_PROFILE_IMAGE_URL = "https://mzconnect-bucket.s3.ap-northeast-2.amazonaws.com/default_image.png";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

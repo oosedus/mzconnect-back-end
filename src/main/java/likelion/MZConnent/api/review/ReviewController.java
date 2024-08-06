@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import likelion.MZConnent.dto.paging.response.PageContentResponse;
 import likelion.MZConnent.dto.review.request.SaveReviewRequest;
+import likelion.MZConnent.dto.review.response.ReviewDetailResponse;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
 import likelion.MZConnent.dto.review.response.SaveReviewResponse;
 import likelion.MZConnent.jwt.principle.UserPrinciple;
@@ -70,5 +71,20 @@ public class ReviewController {
         } else {
             return ResponseEntity.ok(Map.of("message", "후기 좋아요 삭제 성공"));
         }
+    }
+
+
+    // 후기 상세 정보 조회
+    @GetMapping("/api/reviews/{reviewId}")
+    public ResponseEntity<ReviewDetailResponse> getReviewDetailInfo(@PathVariable("reviewId") Long reviewId) {
+        ReviewDetailResponse response = reviewService.getReviewDetailInfo(reviewId);
+        log.info("후기 상세 정보: {}", response);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/api/reviews/{reviewId}")
+    public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return ResponseEntity.ok(Map.of("message", "후기 삭제 성공"));
     }
 }

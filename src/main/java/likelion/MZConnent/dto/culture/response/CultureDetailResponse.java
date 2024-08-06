@@ -5,6 +5,7 @@ import likelion.MZConnent.domain.club.Club;
 import likelion.MZConnent.domain.club.ClubRole;
 import likelion.MZConnent.domain.club.GenderRestriction;
 import likelion.MZConnent.domain.culture.Culture;
+import likelion.MZConnent.dto.club.response.ClubSimpleResponse;
 import likelion.MZConnent.dto.review.response.ReviewsSimpleResponse;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class CultureDetailResponse {
     private int interestCount;
     private String recommendedMember;
     private String content;
-    private List<ClubsSimpleResponse> clubs;
+    private List<ClubSimpleResponse> clubs;
     private List<ReviewsSimpleResponse> reviews;
 
     @Builder
@@ -40,51 +41,11 @@ public class CultureDetailResponse {
         this.recommendedMember = culture.getRecommendedMember();
         this.content = culture.getContent();
         this.clubs = culture.getClubs().stream().filter(club ->
-            (club.getStatus().equals("OPEN")
-        )).map(club ->
-                ClubsSimpleResponse.builder()
-                        .club(club).build()).collect(Collectors.toList());
+                (club.getStatus().equals("OPEN")
+                )).map(ClubSimpleResponse::new).collect(Collectors.toList());
         this.reviews = culture.getReviews().stream().map(
                 review -> ReviewsSimpleResponse.builder()
                         .review(review).build()
         ).collect(Collectors.toList());
-    }
-
-
-    @Getter
-    @ToString
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    static private class ClubsSimpleResponse {
-        private Long clubId;
-        private String title;
-        private String regionName;
-        private String cultureName;
-        private String leaderProfileImage;
-        private LocalDate meetingDate;
-        private LocalDateTime createdDate;
-        private GenderRestriction genderRestriction;
-        private AgeRestriction ageRestriction;
-        private int currentParticipant;
-        private int maxParticipant;
-
-        @Builder
-        public ClubsSimpleResponse(Club club) {
-            this.clubId = club.getClubId();
-            this.title = club.getTitle();
-            this.regionName = club.getRegion().getName();
-            this.cultureName = club.getCulture().getName();
-            this.leaderProfileImage = club.getClubMembers().stream().filter((member) ->
-                    member.getClubRole() == ClubRole.LEADER
-            ).findFirst().orElseThrow(() -> {
-                log.info("모임장이 존재하지 않음.");
-                return new IllegalArgumentException("모임장이 존재하지 않습니다.");
-            }).getMember().getProfileImageUrl();
-            this.meetingDate = club.getMeetingDate();
-            this.createdDate = club.getCreatedDate();
-            this.genderRestriction = club.getGenderRestriction();
-            this.ageRestriction = club.getAgeRestriction();
-            this.currentParticipant = club.getCurrentParticipant();
-            this.maxParticipant = club.getMaxParticipant();
-        }
     }
 }
