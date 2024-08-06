@@ -44,6 +44,8 @@ public class ClubInfoService {
                 .filter(cm -> cm.getClubRole() == ClubRole.LEADER)
                 .map(cm -> LeaderDto.builder()
                         .username(cm.getMember().getUsername())
+                        .age(cm.getMember().getAge())
+                        .gender(cm.getMember().getGender())
                         .profileImageUrl(cm.getMember().getProfileImageUrl())
                         .selfIntroductions(cm.getMember().getSelfIntroductions().stream()
                                 .map(si -> SelfIntroductionDto.builder()
