@@ -45,7 +45,10 @@
 ### 1. 서비스 배포링크
 [요즘 애들 뭐햐](http://mzconnect.site/)
 
-### 2. 주요 기능
+### 2. 발표 자료
+[발표 자료](https://drive.google.com/file/d/1gb8piPE5vwPDPuSaLrmMgKf31fnc0wgr/view?usp=sharing)
+
+### 3. 주요 기능
 ✅ 요즘 머햐
   - 여러 세대가 즐기는 트렌디한 여가 콘텐츠와 사용 설명서를 제공하여 진입장벽을 낮춥니다.
     
@@ -56,6 +59,6 @@
 ✅ 후기 기능
   - 여가 활동 후기를 통해 커뮤니티를 형성하고, 활동의 선순환 구조를 만듭니다.
 
-### 3. 설계
+### 4. 설계
 - [API 명세서](https://maple-theory-423.notion.site/API-f31907551ccf4a8b8b984b860634d370?pvs=4)
 - [ERD](https://github.com/user-attachments/assets/9c6ca3fe-89e8-49ac-958e-18d3164a2df7)
